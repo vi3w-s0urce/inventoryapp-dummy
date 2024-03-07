@@ -2,7 +2,7 @@ import { useState } from "react";
 import { TbAlertCircle } from "react-icons/tb";
 import { motion } from "framer-motion";
 
-const TextInput = ({ name, type = "text", placeholder = null, value = null, label = null, required = false, error = null, onChange }) => {
+const TextAreaInput = ({ name, placeholder = null, value = null, label, required = false, error = null, onChange }) => {
     const [IsInvalid, setIsInvalid] = useState(false)
 
     const handleChange = (e) => {
@@ -11,18 +11,18 @@ const TextInput = ({ name, type = "text", placeholder = null, value = null, labe
     }
 
     return (
-        <div className="flex flex-col w-full">
+        <div className="flex flex-col">
             <label htmlFor={name} className="mb-1">
                 {label}
                 {required && name !== "email" ? <span className="text-sm text-red-500 font-bold"> *</span> : null}
             </label>
-            <input
-                type={type}
+            <textarea
                 name={name}
                 id={name}
                 value={value}
                 placeholder={placeholder}
-                className={`dark:bg-slate-700 w-full px-3 py-2 border-2 dark:border-slate-600 rounded-lg outline-none focus:border-sky-300 transition-all ${IsInvalid || error ? "border-red-300 focus:border-red-300" : null}`}
+                rows="3"
+                className={`w-full px-3 py-2 border-2 rounded-lg outline-none focus:border-sky-300 transition-all ${IsInvalid || error ? "border-red-300 focus:border-red-300" : null}`}
                 required={required}
                 onChange={handleChange}
                 onInvalid={() => setIsInvalid(true)}
@@ -41,4 +41,4 @@ const TextInput = ({ name, type = "text", placeholder = null, value = null, labe
     );
 };
 
-export default TextInput;
+export default TextAreaInput;

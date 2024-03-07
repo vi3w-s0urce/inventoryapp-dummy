@@ -17,10 +17,10 @@ return new class extends Migration
             $table->text('description');
             $table->bigInteger('price');
             $table->integer('stock');
-            $table->index('product_category_id');
+            $table->index('product_category_id')->nullable();
             $table->index('supplier_id');
             $table->foreignId('supplier_id')->references('id')->on('suppliers');
-            $table->foreignId('product_category_id')->references('id')->on('product_categories');
+            $table->foreignId('product_category_id')->references('id')->on('product_categories')->onDelete('set null');
             $table->timestamps();
         });
     }

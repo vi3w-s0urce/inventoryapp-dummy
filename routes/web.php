@@ -2,6 +2,9 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ProductCategoryController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SupplierController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -22,6 +25,14 @@ Route::controller(AuthController::class)->group(function () {
     Route::get('/logout', 'logout')->middleware('auth')->name('logout');
 });
 
-Route::controller(DashboardController::class)->group(function () {
-    Route::get('/', 'dashboard')->middleware('auth')->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::controller(DashboardController::class)->group(function () {
+        Route::get('/', 'dashboard')->middleware('auth')->name('dashboard');
+    });
+    Route::resource('/product/category', ProductCategoryController::class);
+    Route::resource('/product', ProductController::class);
+    Route::controller(SupplierController::class)->group(function () {
+        Route::resource('/supplier', SupplierController::class);
+    });
 });

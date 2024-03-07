@@ -46,7 +46,7 @@ const Login = ({ flash }) => {
                     <img src={Logo} className="absolute top-12 left-12 w-10 mr-2 z-10" />
                     <img src={LoginBackground} className="max-w-xl w-full z-10" />
                 </div>
-                <div className="bg-white w-full flex flex-col justify-center items-center p-10 sm:rounded-l-3xl shadow-md">
+                <div className="bg-white w-full flex flex-col justify-center items-center p-10 sm:rounded-l-3xl shadow-md dark:bg-slate-800">
                     <div className="max-w-96 w-full">
                         <div className="mb-12 flex items-center">
                             <motion.img src={Logo} className="w-6 mr-2" initial={{ scale: 0 }} animate={{ scale: 1 }} />

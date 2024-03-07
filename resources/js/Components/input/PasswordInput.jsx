@@ -21,7 +21,7 @@ const PasswordInput = ({ name, placeholder = null, label, value = null, required
     };
 
     return (
-        <div className="flex flex-col">
+        <div className="flex flex-col w-full">
             <label htmlFor={name} className="mb-1">
                 {label}
                 {required && name !== "password" ? <span className="text-sm text-red-500 font-bold"> *</span> : null}
@@ -33,7 +33,7 @@ const PasswordInput = ({ name, placeholder = null, label, value = null, required
                     id={name}
                     placeholder={placeholder}
                     value={value}
-                    className={`w-full px-3 py-2 border-2 rounded-lg outline-none focus:border-sky-300 transition-all ${
+                    className={`dark:bg-slate-700 w-full px-3 py-2 border-2 dark:border-slate-600 rounded-lg outline-none focus:border-sky-300 transition-all ${
                         isInvalid || error ? "border-red-300 focus:border-red-300" : null
                     }`}
                     required
