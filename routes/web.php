@@ -30,7 +30,10 @@ Route::middleware('auth')->group(function () {
     Route::controller(DashboardController::class)->group(function () {
         Route::get('/', 'dashboard')->middleware('auth')->name('dashboard');
     });
-    Route::resource('/product/category', ProductCategoryController::class);
+    Route::controller(ProductCategoryController::class)->group(function () {
+        Route::delete('/product/category/{ids}', 'destroySelected')->name('category.destroySelected');
+        Route::resource('/product/category', ProductCategoryController::class);
+    });
     Route::resource('/product', ProductController::class);
     Route::controller(SupplierController::class)->group(function () {
         Route::resource('/supplier', SupplierController::class);

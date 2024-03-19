@@ -138,7 +138,7 @@ const Sidebar = () => {
                                 >
                                     <Link
                                         href={route("category.index")}
-                                        className={`flex items-center p-2 cursor-pointer rounded-lg ml-8 ${
+                                        className={`flex items-center p-2 cursor-pointer rounded-lg ml-8 transition-all ${
                                             currentRoute.subRoute == "category" ? "text-sky-500" : "hover:bg-slate-200 dark:hover:bg-slate-700"
                                         }`}
                                     >
@@ -147,7 +147,7 @@ const Sidebar = () => {
                                     </Link>
                                     <Link
                                         href={route("product.index")}
-                                        className={`flex items-center p-2 cursor-pointer rounded-lg ml-8 ${
+                                        className={`flex items-center p-2 cursor-pointer rounded-lg ml-8 transition-all ${
                                             currentRoute.subRoute == "master" ? "text-sky-500" : "hover:bg-slate-200 dark:hover:bg-slate-700"
                                         }`}
                                     >
@@ -206,15 +206,15 @@ const Sidebar = () => {
             <div>
                 <div className="text-slate-600 px-3">
                     <motion.div
-                        className={`flex items-center justify-between group/darkmode p-2 m-1 rounded-lg ${
+                        className={`flex items-center justify-between p-2 m-1 rounded-lg ${
                             isDarkMode ? "bg-sky-100 text-sky-500 dark:bg-sky-900" : "text-slate-600 dark:text-slate-400"
                         } transition-all`}
                         initial={{ opacity: 0, x: -5 }}
                         animate={{ opacity: 1, x: 0 }}
                     >
                         <div className="flex items-center">
-                            <TbSunMoon className="text-2xl mr-3 group/darkmode-hover:text-white" />
-                            <p className="font-bold text-lg group/darkmode-hover:text-white">Theme Mode</p>
+                            <TbSunMoon className="text-2xl mr-3" />
+                            <p className="font-bold text-lg">Theme Mode</p>
                         </div>
                         <DarkModeToggle />
                     </motion.div>

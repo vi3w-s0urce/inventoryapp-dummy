@@ -98,4 +98,27 @@ class ProductCategoryController extends Controller
 
         return redirect()->back()->with('success', 'Category successfully deleted');
     }
+
+    public function destroySelected(string $ids)
+    {
+        $ids = explode(',', $ids);
+
+        $checkCategory = ProductCategory::findMany($ids);
+
+        if (!$ids) {
+            return redirect()->back()->with('error', 'Invalid Request! ID cant be empty.');
+        }
+
+        if (!$checkCategory) {
+            return redirect()->back()->with('error', 'Invalid Request! Item not found.');
+        }
+
+        $deleteCategory = ProductCategory::destroy($ids);
+
+        if (!$deleteCategory) {
+            return redirect()->back()->with('error', 'Something Went Wrong☹️');
+        }
+
+        return redirect()->back()->with('success', 'Selected category successfully deleted');
+    }
 }

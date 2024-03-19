@@ -20,7 +20,7 @@ return new class extends Migration
             $table->index('product_category_id')->nullable();
             $table->index('supplier_id');
             $table->foreignId('supplier_id')->references('id')->on('suppliers');
-            $table->foreignId('product_category_id')->references('id')->on('product_categories')->onDelete('set null');
+            $table->foreignId('product_category_id')->references('id')->on('product_categories');
             $table->timestamps();
         });
     }

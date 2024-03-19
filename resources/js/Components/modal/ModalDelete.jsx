@@ -10,6 +10,8 @@ const ModalDelete = ({ itemID, closeModal, type, description }) => {
     const handleDelete = () => {
         if (type == "category") {
             Inertia.delete(route('category.destroy', itemID));
+        } else if (type == "category_selected") {
+            Inertia.delete(route('category.destroySelected', itemID.join(',')));
         } else if (type == "supplier") {
             Inertia.delete(route('supplier.destroy', itemID));
         }

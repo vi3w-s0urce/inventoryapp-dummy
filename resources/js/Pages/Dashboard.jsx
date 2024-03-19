@@ -123,7 +123,7 @@ const Dashboard = ({ flash, user, isAdmin }) => {
                         whileInView={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.1 }}
                     >
-                        <div className="p-2 bg-sky-100 dark:bg-sky-900 text-sky-500 rounded-xl mr-2">
+                        <div className="p-2 bg-sky-100 dark:bg-sky-500 dark:bg-opacity-20 text-sky-500 rounded-xl mr-2">
                             <TbShoppingCart className="text-6xl" />
                         </div>
                         <div>
@@ -137,7 +137,7 @@ const Dashboard = ({ flash, user, isAdmin }) => {
                         whileInView={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.2 }}
                     >
-                        <div className="p-2 bg-sky-100 dark:bg-sky-900 text-sky-500 rounded-xl mr-2">
+                        <div className="p-2 bg-sky-100 dark:bg-sky-500 dark:bg-opacity-20 text-sky-500 rounded-xl mr-2">
                             <TbBox className="text-6xl" />
                         </div>
                         <div>
@@ -151,7 +151,7 @@ const Dashboard = ({ flash, user, isAdmin }) => {
                         whileInView={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.3 }}
                     >
-                        <div className="p-2 bg-sky-100 dark:bg-sky-900 text-sky-500 rounded-xl mr-2">
+                        <div className="p-2 bg-sky-100 dark:bg-sky-500 dark:bg-opacity-20 text-sky-500 rounded-xl mr-2">
                             <TbBoxSeam className="text-6xl" />
                         </div>
                         <div>
@@ -165,7 +165,7 @@ const Dashboard = ({ flash, user, isAdmin }) => {
                         whileInView={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.4 }}
                     >
-                        <div className="p-2 bg-sky-100 dark:bg-sky-900 text-sky-500 rounded-xl mr-2">
+                        <div className="p-2 bg-sky-100 dark:bg-sky-500 dark:bg-opacity-20 text-sky-500 rounded-xl mr-2">
                             <TbShoppingBag className="text-6xl" />
                         </div>
                         <div>

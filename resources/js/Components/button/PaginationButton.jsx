@@ -12,7 +12,7 @@ const PaginationButton = ({ pagination, data }) => {
     return (
         <div className="flex justify-center items-center gap-3">
             <button
-                className="text-lg p-2 text-sky-500 rounded-xl border-2 border-sky-200 hover:bg-sky-400 hover:text-white transition-all"
+                className="text-base p-2 text-sky-500 rounded-xl border-2 border-sky-200 hover:bg-sky-400 hover:text-white dark:border-sky-500 dark:border-opacity-20 dark:hover:text-slate-800 transition-all"
                 onClick={() => (currentPage != 0 ? pagination.fns.onSetPage(currentPage - 1) : false)}
             >
                 <IoIosArrowBack />
@@ -21,19 +21,19 @@ const PaginationButton = ({ pagination, data }) => {
                 currentPage == 0 ? (
                     <>
                         <button
-                            className="text-base bg-sky-400 text-white font-bold px-3 py-1 rounded-lg"
+                            className="text-base bg-sky-400 text-white font-bold px-3 py-1 rounded-lg dark:text-slate-800"
                             onClick={() => pagination.fns.onSetPage(currentPage)}
                         >
                             {currentPage + 1}
                         </button>
                         <button
-                            className="text-base text-slate-400 hover:bg-sky-100 hover:text-sky-500 font-bold px-3 py-1 rounded-lg"
+                            className="text-base text-slate-500 hover:bg-sky-100 hover:text-sky-500 font-bold px-3 py-1 rounded-lg dark:text-slate-400 dark:hover:bg-sky-500 dark:hover:bg-opacity-20 transition-all"
                             onClick={() => pagination.fns.onSetPage(currentPage + 1)}
                         >
                             {currentPage + 2}
                         </button>
                         <button
-                            className="text-base text-slate-400 hover:bg-sky-100 hover:text-sky-500 font-bold px-3 py-1 rounded-lg"
+                            className="text-base text-slate-500 hover:bg-sky-100 hover:text-sky-500 font-bold px-3 py-1 rounded-lg dark:text-slate-400 dark:hover:bg-sky-500 dark:hover:bg-opacity-20 transition-all"
                             onClick={() => pagination.fns.onSetPage(currentPage + 2)}
                         >
                             {currentPage + 3}
@@ -42,19 +42,19 @@ const PaginationButton = ({ pagination, data }) => {
                 ) : currentPage == totalPage - 1 ? (
                     <>
                         <button
-                            className="text-base text-slate-400 hover:bg-sky-100 hover:text-sky-500 font-bold px-3 py-1 rounded-lg"
+                            className="text-base text-slate-500 hover:bg-sky-100 hover:text-sky-500 font-bold px-3 py-1 rounded-lg dark:text-slate-400 dark:hover:bg-sky-500 dark:hover:bg-opacity-20 transition-all"
                             onClick={() => pagination.fns.onSetPage(currentPage - 3)}
                         >
                             {currentPage - 2}
                         </button>
                         <button
-                            className="text-base text-slate-400 hover:bg-sky-100 hover:text-sky-500 font-bold px-3 py-1 rounded-lg"
+                            className="text-base text-slate-500 hover:bg-sky-100 hover:text-sky-500 font-bold px-3 py-1 rounded-lg dark:text-slate-400 dark:hover:bg-sky-500 dark:hover:bg-opacity-20 transition-all"
                             onClick={() => pagination.fns.onSetPage(currentPage - 2)}
                         >
                             {currentPage - 1}
                         </button>
                         <button
-                            className="text-base text-slate-400 hover:bg-sky-100 hover:text-sky-500 font-bold px-3 py-1 rounded-lg"
+                            className="text-base text-slate-500 hover:bg-sky-100 hover:text-sky-500 font-bold px-3 py-1 rounded-lg dark:text-slate-400 dark:hover:bg-sky-500 dark:hover:bg-opacity-20 transition-all"
                             onClick={() => pagination.fns.onSetPage(currentPage - 1)}
                         >
                             {currentPage}
@@ -63,31 +63,45 @@ const PaginationButton = ({ pagination, data }) => {
                 ) : (
                     <>
                         <button
-                            className="text-base text-slate-400 hover:bg-sky-100 hover:text-sky-500 font-bold px-3 py-1 rounded-lg"
+                            className="text-base text-slate-500 hover:bg-sky-100 hover:text-sky-500 font-bold px-3 py-1 rounded-lg dark:text-slate-400 dark:hover:bg-sky-500 dark:hover:bg-opacity-20 transition-all"
                             onClick={() => pagination.fns.onSetPage(currentPage - 1)}
                         >
                             {currentPage}
                         </button>
                         <button
-                            className="text-base bg-sky-400 text-white font-bold px-3 py-1 rounded-lg"
+                            className="text-base bg-sky-400 text-white font-bold px-3 py-1 rounded-lg dark:text-slate-800"
                             onClick={() => pagination.fns.onSetPage(currentPage)}
                         >
                             {currentPage + 1}
                         </button>
                         <button
-                            className="text-base text-slate-400 hover:bg-sky-100 hover:text-sky-500 font-bold px-3 py-1 rounded-lg"
+                            className="text-base text-slate-500 hover:bg-sky-100 hover:text-sky-500 font-bold px-3 py-1 rounded-lg dark:text-slate-400 dark:hover:bg-sky-500 dark:hover:bg-opacity-20 transition-all"
                             onClick={() => pagination.fns.onSetPage(currentPage + 1)}
                         >
                             {currentPage + 2}
                         </button>
                     </>
                 )
-            ) : null}
+            ) : (
+                pagination.state.getPages(data.nodes).map((data, index) => (
+                    <button
+                        key={index}
+                        className={`text-base font-bold px-3 py-1 rounded-lg ${
+                            index == currentPage ? "bg-sky-400 text-white" : "text-slate-400 hover:bg-sky-100 hover:text-sky-500 transition-all"
+                        }`}
+                        onClick={() => pagination.fns.onSetPage(index)}
+                    >
+                        {index + 1}
+                    </button>
+                ))
+            )}
             {totalPage > 5 && (
                 <>
-                    <button className="relative text-slate-400">
+                    <div className="relative text-slate-500">
                         <span
-                            className={`p-3 rounded-lg h-fit block ${ isAllPageOpen ? 'border-2 border-sky-200 text-sky-500' : 'hover:bg-sky-100 hover:text-sky-500'}`}
+                            className={`p-3 rounded-lg h-fit block cursor-pointer ${
+                                isAllPageOpen ? "bg-sky-100 text-sky-500 dark:bg-sky-500 dark:bg-opacity-20" : "hover:bg-sky-100 hover:text-sky-500 dark:text-slate-400 dark:hover:bg-sky-500 dark:hover:bg-opacity-20 transition-all"
+                            }`}
                             onClick={() => (isAllPageOpen ? setIsAllPageOpen(false) : setIsAllPageOpen(true))}
                         >
                             <TbDots />
@@ -104,7 +118,7 @@ const PaginationButton = ({ pagination, data }) => {
                                         <button
                                             key={index}
                                             className={`text-base font-bold px-3 py-1 rounded-lg ${
-                                                index == currentPage ? "bg-sky-400 text-white" : "text-slate-400 hover:bg-sky-100 hover:text-sky-500"
+                                                index == currentPage ? "bg-sky-400 text-white dark:text-slate-800" : "text-slate-500 hover:bg-sky-100 hover:text-sky-500 dark:hover:bg-sky-500 dark:hover:bg-opacity-20 transition-all"
                                             }`}
                                             onClick={() => pagination.fns.onSetPage(index)}
                                         >
@@ -114,10 +128,10 @@ const PaginationButton = ({ pagination, data }) => {
                                 </motion.div>
                             )}
                         </AnimatePresence>
-                    </button>
+                    </div>
                     <button
                         className={`text-base px-3 py-1 rounded-lg font-bold ${
-                            currentPage == totalPage - 1 ? "bg-sky-400 text-white" : "text-slate-400 hover:bg-sky-100 hover:text-sky-500"
+                            currentPage == totalPage - 1 ? "bg-sky-400 text-white dark:text-slate-800" : "text-slate-500 hover:bg-sky-100 hover:text-sky-500 dark:text-slate-400 dark:hover:bg-sky-500 dark:hover:bg-opacity-20 transition-all"
                         }`}
                         onClick={() => pagination.fns.onSetPage(totalPage - 1)}
                     >
@@ -126,7 +140,7 @@ const PaginationButton = ({ pagination, data }) => {
                 </>
             )}
             <button
-                className="text-base p-2 text-sky-500 rounded-xl border-2 border-sky-200 hover:bg-sky-400 hover:text-white transition-all"
+                className="text-base p-2 text-sky-500 rounded-xl border-2 border-sky-200 hover:bg-sky-400 hover:text-white dark:border-sky-500 dark:border-opacity-20 dark:hover:text-slate-800 transition-all"
                 onClick={() => (currentPage != totalPage - 1 ? pagination.fns.onSetPage(currentPage + 1) : false)}
             >
                 <IoIosArrowForward />
