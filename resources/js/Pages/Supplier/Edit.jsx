@@ -11,27 +11,27 @@ import TextAreaInput from "../../Components/input/TextAreaInput";
 import SelectInput from "../../Components/input/SelectInput";
 import NumberInput from "../../Components/input/NumberInput";
 
-const SupplierCreate = ({ flash }) => {
+const CustomerEdit = ({ flash, supplier }) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(setCurrentRoute({ route: "supplier", subRoute: null }));
     }, []);
 
-    const { data, setData, post, processing, errors } = useForm({
-        name: "",
-        email: "",
-        number_phone: null,
-        address: "",
+    const { data, setData, post, put, processing, errors } = useForm({
+        name: supplier.name,
+        email: supplier.email,
+        number_phone: supplier.number_phone,
+        address: supplier.address,
     });
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        post(route("supplier.store"));
+        put(route("supplier.update", supplier.id));
     };
 
     const handleReset = () => {
-        setData({ name: "", email: "", number_phone: "", address: "" });
+        setData({ name: supplier.name, email: supplier.email, number_phone: supplier.number_phone, address: supplier.address });
     };
 
     return (
@@ -43,11 +43,11 @@ const SupplierCreate = ({ flash }) => {
             <section className="ml-80 p-8 relative">
                 <div className="mb-5">
                     <h1 className="text-3xl font-bold">Supplier</h1>
-                    <p className="text-slate-500 dark:text-slate-400 text-lg">Add New Supplier</p>
+                    <p className="text-slate-500 dark:text-slate-400 text-lg">Edit Current Supplier</p>
                 </div>
                 <div className="bg-white dark:bg-slate-800 shadow-lg p-5 rounded-xl">
                     <div className="flex justify-between items-center mb-3">
-                        <p className="text-xl font-bold">Create Supplier</p>
+                        <p className="text-xl font-bold">Edit Supplier</p>
                         <Link
                             href={route("supplier.index")}
                             className="flex items-center gap-2 bg-slate-200 hover:bg-slate-300 dark:bg-slate-700 text-slate-500 dark:text-slate-400 px-3 py-2 rounded-lg font-bold transition-all"
@@ -110,7 +110,7 @@ const SupplierCreate = ({ flash }) => {
                                     type="submit"
                                     className="bg-sky-500 hover:bg-sky-600 text-white dark:text-slate-800 px-5 py-2 rounded-lg font-bold transition-all"
                                 >
-                                    Add Supplier
+                                    Edit Supplier
                                 </button>
                             </div>
                         </form>
@@ -121,4 +121,4 @@ const SupplierCreate = ({ flash }) => {
     );
 };
 
-export default SupplierCreate;
+export default CustomerEdit;

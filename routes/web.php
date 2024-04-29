@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SupplierController;
@@ -31,11 +33,23 @@ Route::middleware('auth')->group(function () {
         Route::get('/', 'dashboard')->middleware('auth')->name('dashboard');
     });
     Route::controller(ProductCategoryController::class)->group(function () {
-        Route::delete('/product/category/{ids}', 'destroySelected')->name('category.destroySelected');
+        Route::delete('/product/category/selected:{ids}', 'destroySelected')->name('category.destroySelected');
         Route::resource('/product/category', ProductCategoryController::class);
     });
-    Route::resource('/product', ProductController::class);
+    Route::controller(ProductController::class)->group(function () {
+        Route::delete('/product/selected:{ids}', 'destroySelected')->name('product.destroySelected');
+        Route::post('/product/{product}', 'update')->name('product.update');
+        Route::resource('/product', ProductController::class);
+    });
     Route::controller(SupplierController::class)->group(function () {
+        Route::delete('/supplier/selected:{ids}', 'destroySelected')->name('supplier.destroySelected');
         Route::resource('/supplier', SupplierController::class);
+    });
+    Route::controller(CustomerController::class)->group(function () {
+        Route::delete('/customer/selected:{ids}', 'destroySelected')->name('customer.destroySelected');
+        Route::resource('/customer', CustomerController::class);
+    });
+    Route::controller(OrderController::class)->group(function () {
+        Route::resource('/order', OrderController::class);
     });
 });

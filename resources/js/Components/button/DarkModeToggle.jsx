@@ -31,7 +31,6 @@ const DarkModeToggle = () => {
         } else {
             dispatch(setDarkMode(false));
         }
-        console.log(darkMode);
     }, [darkMode]);
 
     return (

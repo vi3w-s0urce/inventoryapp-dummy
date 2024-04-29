@@ -34,7 +34,7 @@ const PasswordInput = ({ name, placeholder = null, label, value = null, required
                     placeholder={placeholder}
                     value={value}
                     className={`dark:bg-slate-700 w-full px-3 py-2 border-2 dark:border-slate-600 rounded-lg outline-none focus:border-sky-300 transition-all ${
-                        isInvalid || error ? "border-red-300 focus:border-red-300" : null
+                        isInvalid || error ? "border-red-300 focus:border-red-300 dark:!border-red-800" : null
                     }`}
                     required
                     onChange={handleChange}

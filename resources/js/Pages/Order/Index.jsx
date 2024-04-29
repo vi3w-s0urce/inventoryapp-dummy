@@ -4,41 +4,84 @@ import Layout from "../../Layouts/Default";
 import { Head, Link } from "@inertiajs/react";
 import { useEffect, useState } from "react";
 import Sidebar from "../../Layouts/Sidebar";
-import { TbDotsVertical, TbEdit, TbPlus, TbSearch, TbTrash } from "react-icons/tb";
+import { TbAdjustmentsHorizontal, TbDotsVertical, TbEdit, TbPlus, TbSearch, TbTrash } from "react-icons/tb";
 import { Table, Header, HeaderRow, Body, Row, HeaderCell, Cell } from "@table-library/react-table-library/table";
 import { useRowSelect } from "@table-library/react-table-library/select";
-import { useSort, HeaderCellSort, SortToggleType } from "@table-library/react-table-library/sort";
+import { useTheme } from "@table-library/react-table-library/theme";
 import { FaSort, FaSortDown, FaSortUp } from "react-icons/fa";
 import { AnimatePresence, motion } from "framer-motion";
+import TextInput from "../../Components/input/TextInput";
+import ActionButtonTable from "../../Components/button/ActionButtonTable";
 import ModalDelete from "../../Components/modal/ModalDelete";
+import { tableRowsSizeOptions, tableStyle } from "../../config/tableConfig";
 import { usePagination } from "@table-library/react-table-library/pagination";
-import PaginationButton from "../../Components/button/PaginationButton";
-import Select from "react-select";
-import classNames from "classnames";
+import { useSort, HeaderCellSort, SortToggleType } from "@table-library/react-table-library/sort";
 import CheckboxInput from "../../Components/input/CheckboxInput";
-import { tableStyle, tableRowsSizeOptions } from "../../config/tableConfig";
+import Select from "react-select";
+import PaginationButton from "../../Components/button/PaginationButton";
+import classNames from "classnames";
 import NoData from "./../../../assets/image/NoData.svg";
+import { Inertia } from "@inertiajs/inertia";
+import SelectInput from "../../Components/input/SelectInput";
 
-const ProductCategory = ({ flash, categories }) => {
+const Order = ({ flash, }) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(setCurrentRoute({ route: "product", subRoute: "category" }));
+        dispatch(setCurrentRoute({ route: "order", subRoute: null }));
     }, []);
 
-    const tableTheme = tableStyle("auto 1fr 1fr 1fr 0.5fr");
+    const tableTheme = tableStyle("auto 1.5fr 1fr 1fr 1fr 1fr 0.5fr");
 
-    const [categoriesData, setCategoriesData] = useState(categories);
+    const [orderData, setOrdreData] = useState([]);
     const [search, setSearch] = useState("");
     const [modalDelete, setModalDelete] = useState(null);
     const [modalDeleteSelected, setModalDeleteSelected] = useState(null);
     const [selectedItem, setSelectedItem] = useState([]);
+    const [categoryFilter, setCategoryFilter] = useState({ bool: false, value: null });
+    const [supplierFilter, setSupplierFilter] = useState({ bool: false, value: null });
+    const [openFilter, setOpenFilter] = useState(false);
+
+    const handleResetFilter = () => {
+        setCategoryFilter({ bool: false, value: null });
+        setSupplierFilter({ bool: false, value: null });
+    }
+
+    const categoriesFormatSelect = ({ label, value, color }) => (
+        <div className="w-full flex items-center justify-center">
+            <div
+                className={`w-fit px-3 font-bold rounded-lg ${
+                    color == "Red"
+                        ? "!bg-red-200 text-red-500 dark:!bg-opacity-20 dark:!bg-red-500"
+                        : color == "Green"
+                        ? "!bg-green-200 text-green-500 dark:!bg-opacity-20 dark:!bg-green-500"
+                        : color == "Blue"
+                        ? "!bg-blue-200 text-blue-500 dark:!bg-opacity-20 dark:!bg-blue-500"
+                        : color == "Yellow"
+                        ? "!bg-yellow-200 text-yellow-500 dark:!bg-opacity-20 dark:!bg-yellow-500"
+                        : color == "Purple"
+                        ? "!bg-purple-200 text-purple-500 dark:!bg-opacity-20 dark:!bg-purple-500"
+                        : color == "Cyan"
+                        ? "!bg-cyan-200 text-cyan-500 dark:!bg-opacity-20 dark:!bg-cyan-500"
+                        : color == "grey"
+                        ? "!bg-slate-200 text-slate-500 dark:!bg-opacity-20 dark:!bg-slate-500"
+                        : null
+                }`}
+            >
+                {label}
+            </div>
+        </div>
+    );
 
     const rowsSizeOptions = tableRowsSizeOptions();
 
     const [rowsSize, setRowsSize] = useState(rowsSizeOptions[2].value);
 
-    const data = { nodes: categoriesData.filter((item) => item.name.toLowerCase().includes(search.toLowerCase())) };
+    const data = {
+        nodes: orderData.filter((item) =>
+            item.name.toLowerCase().includes(search.toLowerCase())
+        ),
+    };
 
     const pagination = usePagination(data, {
         state: {
@@ -76,7 +119,9 @@ const ProductCategory = ({ flash, categories }) => {
                 iconDown: <FaSortDown fontSize="small" />,
             },
             sortFns: {
-                CATEGORYNAME: (array) => array.sort((a, b) => a.name.localeCompare(b.name)),
+                NAME: (array) => array.sort((a, b) => a.name.localeCompare(b.name)),
+                PRICE: (array) => array.sort((a, b) => a.name.localeCompare(b.name)),
+                STOCK: (array) => array.sort((a, b) => a.name.localeCompare(b.name)),
             },
         }
     );
@@ -84,7 +129,7 @@ const ProductCategory = ({ flash, categories }) => {
     return (
         <Layout flash={flash}>
             <Head>
-                <title>Product Category | ARGEInventory</title>
+                <title>Order | ARGEInventory</title>
             </Head>
             <Sidebar />
             <AnimatePresence>
@@ -92,44 +137,45 @@ const ProductCategory = ({ flash, categories }) => {
                     <ModalDelete
                         itemID={modalDelete}
                         closeModal={(id = null) => setModalDelete(id)}
-                        type="category"
-                        description="Are you sure to delete this category?"
+                        type="order"
+                        description="Are you sure to delete this product?"
                     />
                 ) : (
                     modalDeleteSelected && (
                         <ModalDelete
                             itemID={modalDeleteSelected}
                             closeModal={(id = null) => setModalDeleteSelected(id)}
-                            type="category_selected"
-                            description={"Are you sure to delete "+ selectedItem.length +" selected item categories?"}
+                            type="order_selected"
+                            description={"Are you sure to delete " + selectedItem.length + " selected item products?"}
                         />
                     )
                 )}
             </AnimatePresence>
             <section className="ml-80 p-8 relative">
                 <div className="mb-5">
-                    <h1 className="text-3xl font-bold">Product Category</h1>
-                    <p className="text-slate-500 dark:text-slate-400 text-lg">List of Product Categories</p>
+                    <h1 className="text-3xl font-bold">Order</h1>
+                    <p className="text-slate-500 dark:text-slate-400 text-lg">List of All Orders</p>
                 </div>
                 <div className="bg-white dark:bg-slate-800 shadow-lg p-5 rounded-xl">
                     <div className="flex justify-between items-center">
                         <p className="text-xl font-bold">
-                            Categories{" "}
+                            Orders
                             <span className="bg-slate-200 text-slate-500 dark:bg-slate-700 dark:text-slate-400 p-2 rounded-lg text-lg ml-1">
-                                {categoriesData.length}
+                                {orderData.length}
                             </span>
                         </p>
                         <div className="flex items-center gap-3">
                             <AnimatePresence>
                                 {selectedItem.length > 0 && (
                                     <motion.button
-                                        className="flex items-center gap-2 bg-red-400 dark:bg-red-500 text-white dark:text-slate-800 hover:bg-red-500 dark:hover:bg-red-400 px-3 py-2 rounded-lg font-bold whitespace-nowrap transition-all"
+                                        className="flex items-center gap-2 bg-red-400 dark:bg-red-500 text-white dark:text-slate-800 hover:bg-red-500 dark:hover:bg-red-600 px-3 py-2 rounded-lg font-bold whitespace-nowrap transition-all"
                                         onClick={() => setModalDeleteSelected(selectedItem)}
                                         initial={{ opacity: 0 }}
                                         animate={{ opacity: 1 }}
                                         exit={{ opacity: 0 }}
                                     >
-                                        <TbTrash className="font-bold text-xl" /><span>{selectedItem.length}</span>Delete Selected
+                                        <TbTrash className="font-bold text-xl" />
+                                        <span>{selectedItem.length}</span>Delete Selected
                                     </motion.button>
                                 )}
                             </AnimatePresence>
@@ -150,15 +196,65 @@ const ProductCategory = ({ flash, categories }) => {
                                     name="search"
                                     id="search_category"
                                     className="w-full py-2 outline-none rounded-lg dark:bg-slate-800 transition-all"
-                                    placeholder="Search by Category Name"
+                                    placeholder="Search by Product Name"
                                     onChange={handleSearch}
                                 />
                             </label>
+                            <div className="relative">
+                                <div
+                                    className="flex items-center gap-2 bg-slate-200 text-slate-500 hover:bg-slate-300 dark:bg-slate-700 dark:text-slate-400 hover:dark:bg-slate-600 px-3 py-2 rounded-lg font-bold whitespace-nowrap cursor-pointer transition-all"
+                                    onClick={() => (openFilter ? setOpenFilter(false) : setOpenFilter(true))}
+                                >
+                                    <TbAdjustmentsHorizontal className="font-bold text-xl" /> Filter
+                                </div>
+                                <AnimatePresence>
+                                    {openFilter && (
+                                        <motion.div
+                                            initial={{ opacity: 0, y: -10 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            exit={{ opacity: 0, y: -10 }}
+                                            className="absolute bg-white min-w-60 p-3 px-4 text-slate-800 right-0 top-12 shadow-xl rounded-lg border-2 z-10 dark:bg-slate-800 dark:border-slate-600 dark:text-slate-200"
+                                        >
+                                            <div className="w-full flex justify-between items-center border-b-2 dark:border-slate-600 pb-3 mb-3">
+                                                <p className="text-xl font-bold">Filter</p>
+                                                <button
+                                                    type="button"
+                                                    className="px-2 py-1 rounded-lg bg-slate-200 text-slate-500 text-sm font-bold hover:bg-slate-300 dark:bg-slate-700 dark:text-slate-400 hover:dark:bg-slate-600 transition-all"
+                                                    onClick={handleResetFilter}
+                                                >
+                                                    Clear
+                                                </button>
+                                            </div>
+                                            <div className="flex flex-col gap-2 mb-3">
+                                                <SelectInput
+                                                    name="supplier_id"
+                                                    label="Supplier"
+                                                    placeholder="Select Supplier"
+                                                    options={supplierFilterOptions}
+                                                    value={supplierFilter.value}
+                                                    type="filter"
+                                                    onChange={(selected) => setSupplierFilter({ bool: true, value: selected.value })}
+                                                />
+                                                <SelectInput
+                                                    name="product_category_id"
+                                                    label="Category"
+                                                    placeholder="Select Supplier"
+                                                    options={categoriesFilterOptions}
+                                                    formatOptionLabel={categoriesFormatSelect}
+                                                    value={categoryFilter.value}
+                                                    type="filter"
+                                                    onChange={(selected) => setCategoryFilter({ bool: true, value: selected.value })}
+                                                />
+                                            </div>
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+                            </div>
                             <Link
-                                href={route("category.create")}
-                                className="flex items-center gap-2 bg-emerald-400 dark:bg-emerald-500 text-white dark:text-slate-800 hover:bg-emerald-500 dark:hover:bg-emerald-400 px-3 py-2 rounded-lg font-bold whitespace-nowrap transition-all"
+                                href={route("order.create")}
+                                className="flex items-center gap-2 bg-emerald-400 dark:bg-emerald-500 text-white dark:text-slate-800 hover:bg-emerald-500 dark:hover:bg-emerald-600 px-3 py-2 rounded-lg font-bold whitespace-nowrap transition-all"
                             >
-                                <TbPlus className="font-bold text-xl" /> Add Category
+                                <TbPlus className="font-bold text-xl" /> Add Order
                             </Link>
                         </div>
                     </div>
@@ -189,12 +285,18 @@ const ProductCategory = ({ flash, categories }) => {
                                             </HeaderCell>
                                             <HeaderCellSort
                                                 className="!py-2 !px-3 border-y-2 border-slate-200 dark:border-slate-600 hover:text-sky-500 transition-all"
-                                                sortKey="CATEGORYNAME"
+                                                sortKey="NAME"
                                             >
-                                                Category Name
+                                                Product
                                             </HeaderCellSort>
-                                            <HeaderCell className="!py-2 !px-3 border-y-2 dark:border-slate-600">Description</HeaderCell>
-                                            <HeaderCell className="!py-2 !px-3 border-y-2 dark:border-slate-600">Total Products</HeaderCell>
+                                            <HeaderCellSort className="!py-2 !px-3 border-y-2 dark:border-slate-600" sortKey="PRICE">
+                                                Price
+                                            </HeaderCellSort>
+                                            <HeaderCellSort className="!py-2 !px-3 border-y-2 dark:border-slate-600" sortKey="STOCK">
+                                                Stock
+                                            </HeaderCellSort>
+                                            <HeaderCell className="!py-2 !px-3 border-y-2 dark:border-slate-600">Category</HeaderCell>
+                                            <HeaderCell className="!py-2 !px-3 border-y-2 dark:border-slate-600">Supplier</HeaderCell>
                                             <HeaderCell className="!py-2 !px-3 rounded-r-xl border-y-2 border-r-2 border-slate-200 dark:border-slate-600">
                                                 Action
                                             </HeaderCell>
@@ -220,22 +322,12 @@ const ProductCategory = ({ flash, categories }) => {
                                                             initial={{ opacity: 0, y: 10 }}
                                                             whileInView={{ opacity: 1, y: 0 }}
                                                             transition={{ delay: 0.05 }}
-                                                            className={`w-fit px-3 font-bold rounded-lg ${
-                                                                item.color == "Red"
-                                                                    ? "!bg-red-200 text-red-500 dark:!bg-opacity-20 dark:!bg-red-500"
-                                                                    : item.color == "Green"
-                                                                    ? "!bg-green-200 text-green-500 dark:!bg-opacity-20 dark:!bg-green-500"
-                                                                    : item.color == "Blue"
-                                                                    ? "!bg-blue-200 text-blue-500 dark:!bg-opacity-20 dark:!bg-blue-500"
-                                                                    : item.color == "Yellow"
-                                                                    ? "!bg-yellow-200 text-yellow-500 dark:!bg-opacity-20 dark:!bg-yellow-500"
-                                                                    : item.color == "Purple"
-                                                                    ? "!bg-purple-200 text-purple-500 dark:!bg-opacity-20 dark:!bg-purple-500"
-                                                                    : item.color == "Cyan"
-                                                                    ? "!bg-cyan-200 text-cyan-500 dark:!bg-opacity-20 dark:!bg-cyan-500"
-                                                                    : null
-                                                            }`}
+                                                            className="flex justify-start gap-3 items-center whitespace-normal"
                                                         >
+                                                            <img
+                                                                src={"/storage/productImages/" + item.image}
+                                                                className="w-20 h-20 object-cover rounded-xl"
+                                                            />
                                                             {item.name}
                                                         </motion.div>
                                                     </Cell>
@@ -246,7 +338,7 @@ const ProductCategory = ({ flash, categories }) => {
                                                             whileInView={{ opacity: 1, y: 0 }}
                                                             transition={{ delay: 0.05 }}
                                                         >
-                                                            {item.description}
+                                                            Rp{item.price.toLocaleString()}
                                                         </motion.div>
                                                     </Cell>
                                                     <Cell className="!p-3">
@@ -255,7 +347,51 @@ const ProductCategory = ({ flash, categories }) => {
                                                             whileInView={{ opacity: 1, y: 0 }}
                                                             transition={{ delay: 0.05 }}
                                                         >
-                                                            0
+                                                            <span className="text-lg">{item.stock}</span>
+                                                        </motion.div>
+                                                    </Cell>
+                                                    <Cell className="!p-3">
+                                                        {item.product_category_id ? (
+                                                            <motion.div
+                                                                initial={{ opacity: 0, y: 10 }}
+                                                                whileInView={{ opacity: 1, y: 0 }}
+                                                                transition={{ delay: 0.05 }}
+                                                                className={`w-fit px-3 font-bold rounded-lg ${
+                                                                    item.product_category.color == "Red"
+                                                                        ? "bg-red-200 text-red-500 dark:bg-opacity-20 dark:bg-red-500"
+                                                                        : item.product_category.color == "Green"
+                                                                        ? "bg-green-200 text-green-500 dark:bg-opacity-20 dark:bg-green-500"
+                                                                        : item.product_category.color == "Blue"
+                                                                        ? "bg-blue-200 text-blue-500 dark:bg-opacity-20 dark:bg-blue-500"
+                                                                        : item.product_category.color == "Yellow"
+                                                                        ? "bg-yellow-200 text-yellow-500 dark:bg-opacity-20 dark:bg-yellow-500"
+                                                                        : item.product_category.color == "Purple"
+                                                                        ? "bg-purple-200 text-purple-500 dark:bg-opacity-20 dark:bg-purple-500"
+                                                                        : item.product_category.color == "Cyan"
+                                                                        ? "bg-cyan-200 text-cyan-500 dark:bg-opacity-20 dark:bg-cyan-500"
+                                                                        : null
+                                                                }`}
+                                                            >
+                                                                {item.product_category.name}
+                                                            </motion.div>
+                                                        ) : (
+                                                            <motion.div
+                                                                initial={{ opacity: 0, y: 10 }}
+                                                                whileInView={{ opacity: 1, y: 0 }}
+                                                                transition={{ delay: 0.05 }}
+                                                                className="w-fit px-3 font-bold rounded-lg bg-slate-200 text-slate-500 dark:bg-opacity-20 dark:bg-slate-400 dark:text-slate-400"
+                                                            >
+                                                                <span className="text-lg">None</span>
+                                                            </motion.div>
+                                                        )}
+                                                    </Cell>
+                                                    <Cell className="!p-3">
+                                                        <motion.div
+                                                            initial={{ opacity: 0, y: 10 }}
+                                                            whileInView={{ opacity: 1, y: 0 }}
+                                                            transition={{ delay: 0.05 }}
+                                                        >
+                                                            <span className="text-lg">{item.supplier.name}</span>
                                                         </motion.div>
                                                     </Cell>
                                                     <Cell className="!p-3 rounded-r-xl">
@@ -265,7 +401,7 @@ const ProductCategory = ({ flash, categories }) => {
                                                             transition={{ delay: 0.05 }}
                                                             className="flex gap-3 justify-center"
                                                         >
-                                                            <Link href={route("category.edit", item.id)}>
+                                                            <Link href={route("order.edit", item.id)}>
                                                                 <TbEdit className="text-3xl text-slate-500 dark:text-slate-400 hover:text-sky-500 transition-all" />
                                                             </Link>
                                                             <TbTrash
@@ -334,4 +470,4 @@ const ProductCategory = ({ flash, categories }) => {
     );
 };
 
-export default ProductCategory;
+export default Order;

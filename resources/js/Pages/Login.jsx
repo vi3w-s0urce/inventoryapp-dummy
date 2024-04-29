@@ -4,6 +4,7 @@ import LoginBackground from "../../assets/image/LoginBackground.svg";
 import Layout from "../Layouts/Default";
 import TextInput from "../Components/input/TextInput";
 import PasswordInput from "../Components/input/PasswordInput";
+import CheckboxInput from "../Components/input/CheckboxInput";
 import Button from "../Components/button/Button";
 import Logo from "../../assets/image/Logo.svg";
 import { useEffect, useState } from "react";
@@ -13,6 +14,7 @@ const Login = ({ flash }) => {
     const { data, setData, post, processing, errors } = useForm({
         email: "",
         password: "",
+        remember: false,
     });
 
     const handleLogin = (e) => {
@@ -22,9 +24,17 @@ const Login = ({ flash }) => {
 
     useEffect(() => {
         if (Object.keys(errors).length) {
-            setData('password', "");
+            setData("password", "");
         }
     }, [errors]);
+
+    useEffect(() => {
+        console.log(data);
+    }, [data]);
+
+    const handleRemember = (e) => {
+        setData( 'remember', e.target.checked );
+    };
 
     return (
         <Layout flash={flash}>
@@ -66,6 +76,7 @@ const Login = ({ flash }) => {
                                 placeholder="Enter your email"
                                 required={true}
                                 onChange={setData}
+                                login={true}
                                 value={data.email}
                                 error={errors.email && errors.email}
                             />
@@ -77,6 +88,10 @@ const Login = ({ flash }) => {
                                 error={errors.password && errors.password}
                                 value={data.password}
                             />
+                            <div className="flex items-center gap-3">
+                                <CheckboxInput name="remember" onChange={handleRemember} />
+                                <span>Remember Me</span>
+                            </div>
                             <Button type="submit" name="login" label="Login" />
                         </form>
                     </div>

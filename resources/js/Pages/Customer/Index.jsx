@@ -4,31 +4,32 @@ import Layout from "../../Layouts/Default";
 import { Head, Link } from "@inertiajs/react";
 import { useEffect, useState } from "react";
 import Sidebar from "../../Layouts/Sidebar";
-import { TbDotsVertical, TbEdit, TbPlus, TbSearch, TbTrash } from "react-icons/tb";
+import { TbEdit, TbPlus, TbSearch, TbTrash } from "react-icons/tb";
 import { Table, Header, HeaderRow, Body, Row, HeaderCell, Cell } from "@table-library/react-table-library/table";
 import { useRowSelect } from "@table-library/react-table-library/select";
-import { useSort, HeaderCellSort, SortToggleType } from "@table-library/react-table-library/sort";
 import { FaSort, FaSortDown, FaSortUp } from "react-icons/fa";
 import { AnimatePresence, motion } from "framer-motion";
 import ModalDelete from "../../Components/modal/ModalDelete";
+import { tableRowsSizeOptions, tableStyle } from "../../config/tableConfig";
 import { usePagination } from "@table-library/react-table-library/pagination";
-import PaginationButton from "../../Components/button/PaginationButton";
-import Select from "react-select";
-import classNames from "classnames";
+import { useSort, HeaderCellSort, SortToggleType } from "@table-library/react-table-library/sort";
 import CheckboxInput from "../../Components/input/CheckboxInput";
-import { tableStyle, tableRowsSizeOptions } from "../../config/tableConfig";
+import Select from "react-select";
+import PaginationButton from "../../Components/button/PaginationButton";
+import classNames from "classnames";
 import NoData from "./../../../assets/image/NoData.svg";
+import { Inertia } from "@inertiajs/inertia";
 
-const ProductCategory = ({ flash, categories }) => {
+const Customer = ({ flash, customers }) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(setCurrentRoute({ route: "product", subRoute: "category" }));
+        dispatch(setCurrentRoute({ route: "customer", subRoute: null }));
     }, []);
 
-    const tableTheme = tableStyle("auto 1fr 1fr 1fr 0.5fr");
+    const tableTheme = tableStyle("auto 1fr 1fr 1fr 1fr 0.5fr");
 
-    const [categoriesData, setCategoriesData] = useState(categories);
+    const [customerData, setCustomerData] = useState(customers);
     const [search, setSearch] = useState("");
     const [modalDelete, setModalDelete] = useState(null);
     const [modalDeleteSelected, setModalDeleteSelected] = useState(null);
@@ -38,7 +39,7 @@ const ProductCategory = ({ flash, categories }) => {
 
     const [rowsSize, setRowsSize] = useState(rowsSizeOptions[2].value);
 
-    const data = { nodes: categoriesData.filter((item) => item.name.toLowerCase().includes(search.toLowerCase())) };
+    const data = { nodes: customerData.filter((item) => item.name.toLowerCase().includes(search.toLowerCase())) };
 
     const pagination = usePagination(data, {
         state: {
@@ -84,7 +85,7 @@ const ProductCategory = ({ flash, categories }) => {
     return (
         <Layout flash={flash}>
             <Head>
-                <title>Product Category | ARGEInventory</title>
+                <title>Customer | ARGEInventory</title>
             </Head>
             <Sidebar />
             <AnimatePresence>
@@ -92,44 +93,45 @@ const ProductCategory = ({ flash, categories }) => {
                     <ModalDelete
                         itemID={modalDelete}
                         closeModal={(id = null) => setModalDelete(id)}
-                        type="category"
-                        description="Are you sure to delete this category?"
+                        type="customer"
+                        description="Are you sure to delete this customer?"
                     />
                 ) : (
                     modalDeleteSelected && (
                         <ModalDelete
                             itemID={modalDeleteSelected}
                             closeModal={(id = null) => setModalDeleteSelected(id)}
-                            type="category_selected"
-                            description={"Are you sure to delete "+ selectedItem.length +" selected item categories?"}
+                            type="customer_selected"
+                            description={"Are you sure to delete " + selectedItem.length + " selected item customers?"}
                         />
                     )
                 )}
             </AnimatePresence>
             <section className="ml-80 p-8 relative">
                 <div className="mb-5">
-                    <h1 className="text-3xl font-bold">Product Category</h1>
-                    <p className="text-slate-500 dark:text-slate-400 text-lg">List of Product Categories</p>
+                    <h1 className="text-3xl font-bold">Customer</h1>
+                    <p className="text-slate-500 dark:text-slate-400 text-lg">List of All The Customer</p>
                 </div>
                 <div className="bg-white dark:bg-slate-800 shadow-lg p-5 rounded-xl">
                     <div className="flex justify-between items-center">
                         <p className="text-xl font-bold">
-                            Categories{" "}
+                            Customers
                             <span className="bg-slate-200 text-slate-500 dark:bg-slate-700 dark:text-slate-400 p-2 rounded-lg text-lg ml-1">
-                                {categoriesData.length}
+                                {customerData.length}
                             </span>
                         </p>
                         <div className="flex items-center gap-3">
                             <AnimatePresence>
                                 {selectedItem.length > 0 && (
                                     <motion.button
-                                        className="flex items-center gap-2 bg-red-400 dark:bg-red-500 text-white dark:text-slate-800 hover:bg-red-500 dark:hover:bg-red-400 px-3 py-2 rounded-lg font-bold whitespace-nowrap transition-all"
+                                        className="flex items-center gap-2 bg-red-400 dark:bg-red-500 text-white dark:text-slate-800 hover:bg-red-500 dark:hover:bg-red-600 px-3 py-2 rounded-lg font-bold whitespace-nowrap transition-all"
                                         onClick={() => setModalDeleteSelected(selectedItem)}
                                         initial={{ opacity: 0 }}
                                         animate={{ opacity: 1 }}
                                         exit={{ opacity: 0 }}
                                     >
-                                        <TbTrash className="font-bold text-xl" /><span>{selectedItem.length}</span>Delete Selected
+                                        <TbTrash className="font-bold text-xl" />
+                                        <span>{selectedItem.length}</span>Delete Selected
                                     </motion.button>
                                 )}
                             </AnimatePresence>
@@ -150,15 +152,15 @@ const ProductCategory = ({ flash, categories }) => {
                                     name="search"
                                     id="search_category"
                                     className="w-full py-2 outline-none rounded-lg dark:bg-slate-800 transition-all"
-                                    placeholder="Search by Category Name"
+                                    placeholder="Search by Customer Name"
                                     onChange={handleSearch}
                                 />
                             </label>
                             <Link
-                                href={route("category.create")}
-                                className="flex items-center gap-2 bg-emerald-400 dark:bg-emerald-500 text-white dark:text-slate-800 hover:bg-emerald-500 dark:hover:bg-emerald-400 px-3 py-2 rounded-lg font-bold whitespace-nowrap transition-all"
+                                href={route("customer.create")}
+                                className="flex items-center gap-2 bg-emerald-400 dark:bg-emerald-500 text-white dark:text-slate-800 hover:bg-emerald-500 dark:hover:bg-emerald-600 px-3 py-2 rounded-lg font-bold whitespace-nowrap transition-all"
                             >
-                                <TbPlus className="font-bold text-xl" /> Add Category
+                                <TbPlus className="font-bold text-xl" /> Add Customer
                             </Link>
                         </div>
                     </div>
@@ -191,10 +193,11 @@ const ProductCategory = ({ flash, categories }) => {
                                                 className="!py-2 !px-3 border-y-2 border-slate-200 dark:border-slate-600 hover:text-sky-500 transition-all"
                                                 sortKey="CATEGORYNAME"
                                             >
-                                                Category Name
+                                                Customer
                                             </HeaderCellSort>
-                                            <HeaderCell className="!py-2 !px-3 border-y-2 dark:border-slate-600">Description</HeaderCell>
-                                            <HeaderCell className="!py-2 !px-3 border-y-2 dark:border-slate-600">Total Products</HeaderCell>
+                                            <HeaderCell className="!py-2 !px-3 border-y-2 dark:border-slate-600">Address</HeaderCell>
+                                            <HeaderCell className="!py-2 !px-3 border-y-2 dark:border-slate-600">Contact</HeaderCell>
+                                            <HeaderCell className="!py-2 !px-3 border-y-2 dark:border-slate-600">Total Order</HeaderCell>
                                             <HeaderCell className="!py-2 !px-3 rounded-r-xl border-y-2 border-r-2 border-slate-200 dark:border-slate-600">
                                                 Action
                                             </HeaderCell>
@@ -220,21 +223,7 @@ const ProductCategory = ({ flash, categories }) => {
                                                             initial={{ opacity: 0, y: 10 }}
                                                             whileInView={{ opacity: 1, y: 0 }}
                                                             transition={{ delay: 0.05 }}
-                                                            className={`w-fit px-3 font-bold rounded-lg ${
-                                                                item.color == "Red"
-                                                                    ? "!bg-red-200 text-red-500 dark:!bg-opacity-20 dark:!bg-red-500"
-                                                                    : item.color == "Green"
-                                                                    ? "!bg-green-200 text-green-500 dark:!bg-opacity-20 dark:!bg-green-500"
-                                                                    : item.color == "Blue"
-                                                                    ? "!bg-blue-200 text-blue-500 dark:!bg-opacity-20 dark:!bg-blue-500"
-                                                                    : item.color == "Yellow"
-                                                                    ? "!bg-yellow-200 text-yellow-500 dark:!bg-opacity-20 dark:!bg-yellow-500"
-                                                                    : item.color == "Purple"
-                                                                    ? "!bg-purple-200 text-purple-500 dark:!bg-opacity-20 dark:!bg-purple-500"
-                                                                    : item.color == "Cyan"
-                                                                    ? "!bg-cyan-200 text-cyan-500 dark:!bg-opacity-20 dark:!bg-cyan-500"
-                                                                    : null
-                                                            }`}
+                                                            className="w-fit rounded-lg"
                                                         >
                                                             {item.name}
                                                         </motion.div>
@@ -246,7 +235,18 @@ const ProductCategory = ({ flash, categories }) => {
                                                             whileInView={{ opacity: 1, y: 0 }}
                                                             transition={{ delay: 0.05 }}
                                                         >
-                                                            {item.description}
+                                                            {item.address}
+                                                        </motion.div>
+                                                    </Cell>
+                                                    <Cell className="!p-3">
+                                                        <motion.div
+                                                            initial={{ opacity: 0, y: 10 }}
+                                                            whileInView={{ opacity: 1, y: 0 }}
+                                                            transition={{ delay: 0.05 }}
+                                                            className="flex flex-col"
+                                                        >
+                                                            <span className="text-lg">{item.email}</span>
+                                                            <span className="text-sm text-slate-500 ">{item.number_phone}</span>
                                                         </motion.div>
                                                     </Cell>
                                                     <Cell className="!p-3">
@@ -265,7 +265,7 @@ const ProductCategory = ({ flash, categories }) => {
                                                             transition={{ delay: 0.05 }}
                                                             className="flex gap-3 justify-center"
                                                         >
-                                                            <Link href={route("category.edit", item.id)}>
+                                                            <Link href={route("customer.edit", item.id)}>
                                                                 <TbEdit className="text-3xl text-slate-500 dark:text-slate-400 hover:text-sky-500 transition-all" />
                                                             </Link>
                                                             <TbTrash
@@ -334,4 +334,4 @@ const ProductCategory = ({ flash, categories }) => {
     );
 };
 
-export default ProductCategory;
+export default Customer;

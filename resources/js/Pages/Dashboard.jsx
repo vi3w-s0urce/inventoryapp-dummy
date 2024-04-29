@@ -9,7 +9,7 @@ import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logout, setUser, setCurrentRoute } from "../Redux/slice";
 
-const Dashboard = ({ flash, user, isAdmin }) => {
+const Dashboard = ({ flash, user, isAdmin, remember }) => {
     const dispatch = useDispatch();
     const darkMode = useSelector((state) => state.darkMode);
 
@@ -17,7 +17,7 @@ const Dashboard = ({ flash, user, isAdmin }) => {
 
     useEffect(() => {
         dispatch(setCurrentRoute({ route: "dashboard" }));
-        dispatch(setUser({ user, isAdmin }));
+        dispatch(setUser({ user, isAdmin, remember }));
     }, []);
 
     const lineChartRef = useRef(null);

@@ -80,19 +80,21 @@ const Sidebar = () => {
                             <p className="font-bold text-lg">Dashboard</p>
                         </motion.div>
                     </Link>
-                    <motion.div
-                        className={`flex items-center p-2 m-1 rounded-lg cursor-pointer transition-all ${
-                            currentRoute.route == "order"
-                                ? "bg-sky-100 text-sky-500 dark:bg-sky-900"
-                                : "text-slate-600 hover:bg-slate-200 dark:text-slate-400 dark:hover:bg-slate-700"
-                        }`}
-                        initial={{ opacity: 0, x: -5 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.2 }}
-                    >
-                        <TbShoppingCart className="text-2xl mr-3" />
-                        <p className="font-bold text-lg">Order</p>
-                    </motion.div>
+                    <Link href={route("order.index")}>
+                        <motion.div
+                            className={`flex items-center p-2 m-1 rounded-lg cursor-pointer transition-all ${
+                                currentRoute.route == "order"
+                                    ? "bg-sky-100 text-sky-500 dark:bg-sky-900"
+                                    : "text-slate-600 hover:bg-slate-200 dark:text-slate-400 dark:hover:bg-slate-700"
+                            }`}
+                            initial={{ opacity: 0, x: -5 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: 0.2 }}
+                        >
+                            <TbShoppingCart className="text-2xl mr-3" />
+                            <p className="font-bold text-lg">Order</p>
+                        </motion.div>
+                    </Link>
                     <motion.div
                         className={`flex items-center p-2 m-1 rounded-lg cursor-pointer transition-all ${
                             currentRoute.route == "report"
@@ -173,19 +175,21 @@ const Sidebar = () => {
                             <p className="font-bold text-lg">Supplier</p>
                         </motion.div>
                     </Link>
-                    <motion.div
-                        className={`flex items-center p-2 m-1 rounded-lg cursor-pointer transition-all ${
-                            currentRoute.route == "customer"
-                                ? "bg-sky-100 text-sky-500 dark:bg-sky-900"
-                                : "text-slate-600 hover:bg-slate-200 dark:text-slate-400 dark:hover:bg-slate-700"
-                        }`}
-                        initial={{ opacity: 0, x: -5 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.6 }}
-                    >
-                        <TbShoppingBag className="text-2xl mr-3" />
-                        <p className="font-bold text-lg">Customer</p>
-                    </motion.div>
+                    <Link href={route("customer.index")}>
+                        <motion.div
+                            className={`flex items-center p-2 m-1 rounded-lg cursor-pointer transition-all ${
+                                currentRoute.route == "customer"
+                                    ? "bg-sky-100 text-sky-500 dark:bg-sky-900"
+                                    : "text-slate-600 hover:bg-slate-200 dark:text-slate-400 dark:hover:bg-slate-700"
+                            }`}
+                            initial={{ opacity: 0, x: -5 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: 0.6 }}
+                        >
+                            <TbShoppingBag className="text-2xl mr-3" />
+                            <p className="font-bold text-lg">Customer</p>
+                        </motion.div>
+                    </Link>
                     {auth.isAdmin && (
                         <motion.div
                             className={`flex items-center p-2 m-1 rounded-lg cursor-pointer transition-all ${
@@ -260,7 +264,7 @@ const Sidebar = () => {
                         )}
                     </AnimatePresence>
                     <div
-                        className={`flex items-center p-2 hover:bg-slate-200 dark:hover:bg-slate-700 cursor-pointer rounded-xl transition-all ${    
+                        className={`flex items-center p-2 hover:bg-slate-200 dark:hover:bg-slate-700 cursor-pointer rounded-xl transition-all ${
                             isProfileOpen && "bg-sky-100 dark:bg-sky-900"
                         }`}
                         onClick={handleProfileOpen}

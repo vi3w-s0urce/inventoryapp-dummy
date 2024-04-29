@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use App\Models\ProductCategory;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class ProductCategoryController extends Controller
@@ -13,8 +16,8 @@ class ProductCategoryController extends Controller
      */
     public function index()
     {
-        $categoriesData = ProductCategory::orderBy('created_at', 'desc')->get();
-        return Inertia::render('ProductCategory/Index', ['categoriesData' => $categoriesData]);
+        $categories = ProductCategory::orderBy('created_at', 'desc')->get();
+        return Inertia::render('ProductCategory/Index', ['categories' => $categories]);
     }
 
     /**
@@ -22,7 +25,8 @@ class ProductCategoryController extends Controller
      */
     public function create()
     {
-        return Inertia::render('ProductCategory/Create');
+        $products = Product::with('supplier', 'product_category')->where('product_category_id', null)->orderBy('created_at', 'desc')->get();
+        return Inertia::render('ProductCategory/Create', ['products' => $products]);
     }
 
     /**
@@ -40,13 +44,25 @@ class ProductCategoryController extends Controller
             'name' => 'required|unique:product_categories,name',
             'color' => 'required',
             'description' => 'required',
+            'selectedProducts' => 'array',
         ]);
 
-        $createdData = ProductCategory::create($dataCategory);
+        try {
+            DB::transaction(function () use ($dataCategory) {
+                $selectedProducts = $dataCategory['selectedProducts'];
+                unset($dataCategory['selectedProducts']);
 
-        if ($createdData) {
+                $createdData = ProductCategory::create($dataCategory);
+
+                if (count($selectedProducts) > 0) {
+                    foreach ($selectedProducts as $product) {
+                        Product::where('id', $product)->update(['product_category_id' => $createdData->id]);
+                    }
+                }
+            });
+
             return redirect()->route('category.index')->with('success', 'Product Category Added Successfully');
-        } else {
+        } catch (QueryException $e) {
             return redirect()->back()->with('error', 'Something Went Wrong☹️');
         }
     }
@@ -64,7 +80,10 @@ class ProductCategoryController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $category = ProductCategory::where('id', $id)->first();
+        $products = Product::with('supplier', 'product_category')->where('product_category_id', null)->orWhere('product_category_id', $id)->orderByRaw('product_category_id = ' . $id . ' DESC')->orderBy('product_category_id')->get();
+        $selectedProducts = Product::with('supplier', 'product_category')->where('product_category_id', $id)->orderBy('created_at', 'desc')->pluck('id');
+        return Inertia::render('ProductCategory/Edit', ['category' => $category, 'products' => $products, 'selectedProducts' => $selectedProducts]);
     }
 
     /**
@@ -72,7 +91,46 @@ class ProductCategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $isAdmin = $request->session()->get('isAdmin');
+
+        if (!$isAdmin) {
+            return redirect()->back()->with('error', 'Permission Denied❗');
+        }
+
+        $dataCategory = $request->validate([
+            'name' => 'required|unique:product_categories,name,'.$id,
+            'color' => 'required',
+            'description' => 'required',
+            'selectedProducts' => 'array',
+        ]);
+
+        try {
+            DB::transaction(function () use ($dataCategory, $id) {
+                $selectedProducts = $dataCategory['selectedProducts'];
+                unset($dataCategory['selectedProducts']);
+
+                $oldSelectedProducts = Product::with('supplier', 'product_category')->where('product_category_id', $id)->orderBy('created_at', 'desc')->pluck('id');
+
+                $updatedData = ProductCategory::where('id', $id)->update($dataCategory);
+
+                $noneSelected = array_diff($oldSelectedProducts->toArray(), $selectedProducts);
+
+                foreach ($noneSelected as $noneSelectedId) {
+                    Product::where('id', $noneSelectedId)->update(['product_category_id' => null]);
+                }
+
+
+                if (count($selectedProducts) > 0) {
+                    foreach ($selectedProducts as $product) {
+                        Product::where('id', $product)->update(['product_category_id' => $id]);
+                    }
+                }
+            });
+
+            return redirect()->route('category.index')->with('success', 'Product Category Added Successfully');
+        } catch (QueryException $e) {
+            return redirect()->back()->with('error', 'Something Went Wrong☹️');
+        }
     }
 
     /**
@@ -119,6 +177,6 @@ class ProductCategoryController extends Controller
             return redirect()->back()->with('error', 'Something Went Wrong☹️');
         }
 
-        return redirect()->back()->with('success', 'Selected category successfully deleted');
+        return redirect()->back()->with('success', count($ids) . ' Selected category successfully deleted');
     }
 }

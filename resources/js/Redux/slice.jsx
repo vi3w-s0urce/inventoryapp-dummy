@@ -1,25 +1,35 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const authSession = sessionStorage.getItem('auth');
+const authLocal = localStorage.getItem('auth');
 const darkModeSession = sessionStorage.getItem('darkMode');
-const initialStateAuth = authSession ? JSON.parse(authSession) : { user: null, isAdmin: null };
+const initialStateAuth =  authLocal ? JSON.parse(authLocal) : authSession ? JSON.parse(authSession) : { user: null, isAdmin: null };
 const initialStateDarkMode = darkModeSession ? JSON.parse(darkModeSession) : false;
-
 
 const authSlice = createSlice({
     name: 'auth',
     initialState: initialStateAuth,
     reducers: {
         setUser: (state, action) => {
-            const { user, isAdmin } = action.payload;
+            const { user, isAdmin, remember } = action.payload;
             state.user = user;
             state.isAdmin = isAdmin;
-            sessionStorage.setItem('auth', JSON.stringify({ user, isAdmin }))
+            state.remember = remember;
+            if (remember) {
+                localStorage.setItem('auth', JSON.stringify({ user, isAdmin }));
+            } else {
+                sessionStorage.setItem('auth', JSON.stringify({ user, isAdmin }))
+            }
         },
         logout: (state) => {
             state.user = null;
             state.isAdmin = null;
-            sessionStorage.removeItem('auth');
+            if (state.remember) {
+                localStorage.removeItem('auth');
+            } else {
+                sessionStorage.removeItem('auth');
+            }
+            state.remember = null;
         }
     }
 });

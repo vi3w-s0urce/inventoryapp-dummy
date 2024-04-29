@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TbAlertCircle } from "react-icons/tb";
 import { motion } from "framer-motion";
 
-const TextAreaInput = ({ name, placeholder = null, value = null, label, required = false, error = null, onChange }) => {
+const TextAreaInput = ({ name, placeholder = null, value, label, required = false, error = null, onChange }) => {
     const [IsInvalid, setIsInvalid] = useState(false)
 
     const handleChange = (e) => {
@@ -22,7 +22,7 @@ const TextAreaInput = ({ name, placeholder = null, value = null, label, required
                 value={value}
                 placeholder={placeholder}
                 rows="3"
-                className={`w-full px-3 py-2 border-2 rounded-lg outline-none focus:border-sky-300 transition-all ${IsInvalid || error ? "border-red-300 focus:border-red-300" : null}`}
+                className={`dark:bg-slate-800 w-full px-3 py-2 border-2 dark:border-slate-600 rounded-lg outline-none focus:border-sky-300 dark:focus:border-sky-600 transition-all ${IsInvalid || error ? "border-red-300 focus:border-red-300 dark:!border-red-800" : null}`}
                 required={required}
                 onChange={handleChange}
                 onInvalid={() => setIsInvalid(true)}

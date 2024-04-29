@@ -16,7 +16,7 @@ const ModeTransition = ({ darkMode }) => {
         createPortal(
             <div className="fixed top-0 left-0 z-50 w-screen h-screen grid place-content-center">
                 <motion.div
-                    className={`${darkMode ? "bg-sky-400" : "bg-slate-700"} grid place-content-center overflow-hidden rounded-full`}
+                    className={`${darkMode ? "bg-sky-400" : "bg-slate-800"} grid place-content-center overflow-hidden rounded-full`}
                     initial={{ width: 0, height: 0 }}
                     animate={{ width: "200rem", height: "200rem" }}
                     exit={{ width: 0, height: 0 }}

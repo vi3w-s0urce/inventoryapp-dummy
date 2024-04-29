@@ -2,19 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Supplier;
+use App\Models\Customer;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class SupplierController extends Controller
+class CustomerController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $suppliers = Supplier::orderBy('created_at', 'desc')->get();
-        return Inertia::render('Supplier/Index', ['suppliers' => $suppliers]);
+        $customers = Customer::orderBy('created_at', 'desc')->get();
+        return Inertia::render('Customer/Index', ['customers' => $customers]);
     }
 
     /**
@@ -22,7 +23,7 @@ class SupplierController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Supplier/Create');
+        return Inertia::render('Customer/Create');
     }
 
     /**
@@ -36,17 +37,17 @@ class SupplierController extends Controller
             return redirect()->back()->with('error', 'Permission Denied❗');
         }
 
-        $dataSupplier = $request->validate([
+        $dataCustomer = $request->validate([
             'name' => 'required',
             'number_phone' => 'required',
             'email' => 'required',
             'address' => 'required',
         ]);
 
-        $createdData = Supplier::create($dataSupplier);
+        $createdData = Customer::create($dataCustomer);
 
         if ($createdData) {
-            return redirect()->route('supplier.index')->with('success', 'Supplier Added Successfully');
+            return redirect()->route('customer.index')->with('success', 'Customer Added Successfully');
         } else {
             return redirect()->back()->with('error', 'Something Went Wrong☹️');
         }
@@ -65,13 +66,13 @@ class SupplierController extends Controller
      */
     public function edit(string $id)
     {
-        $supplier = Supplier::find($id);
+        $customer = Customer::find($id);
 
-        if (!$supplier) {
+        if (!$customer) {
             return redirect()->back()->with('error', 'Invalid Request! Item not found');
         }
 
-        return Inertia::render('Supplier/Edit', ['supplier' => $supplier]);
+        return Inertia::render('Customer/Edit', ['customer' => $customer]);
     }
 
     /**
@@ -85,26 +86,26 @@ class SupplierController extends Controller
             return redirect()->back()->with('error', 'Permission Denied❗');
         }
 
-        $supplier = Supplier::find($id);
+        $customer = Customer::find($id);
 
-        if (!$supplier) {
+        if (!$customer) {
             return redirect()->back()->with('error', 'Invalid Request! Item not found.');
         }
 
-        $dataSupplier = $request->validate([
+        $dataCustomer = $request->validate([
             'name' => 'required',
             'number_phone' => 'required',
             'email' => 'required',
             'address' => 'required',
         ]);
 
-        $updatedData = Supplier::where('id', $id)->update($dataSupplier);
+        $updatedData = Customer::where('id', $id)->update($dataCustomer);
 
         if (!$updatedData) {
             return redirect()->back()->with('error', 'Something Went Wrong☹️');
         }
 
-        return redirect()->route('supplier.index')->with('success', 'Supplier successfully edited');
+        return redirect()->route('customer.index')->with('success', 'Customer successfully edited');
     }
 
     /**
@@ -112,45 +113,45 @@ class SupplierController extends Controller
      */
     public function destroy(string $id)
     {
-        $checkSupplier = Supplier::find($id);
+        $checkCustomer = Customer::find($id);
 
         if (!$id) {
             return redirect()->back()->with('error', 'Invalid Request! ID cant be empty.');
         }
 
-        if (!$checkSupplier) {
+        if (!$checkCustomer) {
             return redirect()->back()->with('error', 'Invalid Request! Item not found.');
         }
 
-        $deleteSupplier = Supplier::destroy($id);
+        $deleteCustomer = Customer::destroy($id);
 
-        if (!$deleteSupplier) {
+        if (!$deleteCustomer) {
             return redirect()->back()->with('error', 'Something Went Wrong☹️');
         }
 
-        return redirect()->back()->with('success', 'Supplier successfully deleted');
+        return redirect()->back()->with('success', 'Customer successfully deleted');
     }
 
     public function destroySelected(string $ids)
     {
         $ids = explode(',', $ids);
 
-        $checkSupplier = Supplier::findMany($ids);
+        $checkCustomer = Customer::findMany($ids);
 
         if (!$ids) {
             return redirect()->back()->with('error', 'Invalid Request! ID cant be empty.');
         }
 
-        if (!$checkSupplier) {
+        if (!$checkCustomer) {
             return redirect()->back()->with('error', 'Invalid Request! Item not found.');
         }
 
-        $deleteSupplier = Supplier::destroy($ids);
+        $deleteCustomer = Customer::destroy($ids);
 
-        if (!$deleteSupplier) {
+        if (!$deleteCustomer) {
             return redirect()->back()->with('error', 'Something Went Wrong☹️');
         }
 
-        return redirect()->back()->with('success', count($ids) . ' Selected supplier successfully deleted');
+        return redirect()->back()->with('success', count($ids) . ' Selected customer successfully deleted');
     }
 }

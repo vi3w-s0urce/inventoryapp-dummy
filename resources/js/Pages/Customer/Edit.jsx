@@ -8,48 +8,47 @@ import { TbPlus } from "react-icons/tb";
 import { MdKeyboardArrowLeft } from "react-icons/md";
 import TextInput from "../../Components/input/TextInput";
 import TextAreaInput from "../../Components/input/TextAreaInput";
-import SelectInput from "../../Components/input/SelectInput";
 import NumberInput from "../../Components/input/NumberInput";
 
-const SupplierCreate = ({ flash }) => {
+const CustomerEdit = ({ flash, customer }) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(setCurrentRoute({ route: "supplier", subRoute: null }));
+        dispatch(setCurrentRoute({ route: "customer", subRoute: null }));
     }, []);
 
-    const { data, setData, post, processing, errors } = useForm({
-        name: "",
-        email: "",
-        number_phone: null,
-        address: "",
+    const { data, setData, post, put, processing, errors } = useForm({
+        name: customer.name,
+        email: customer.email,
+        number_phone: customer.number_phone,
+        address: customer.address,
     });
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        post(route("supplier.store"));
+        put(route("customer.update", customer.id));
     };
 
     const handleReset = () => {
-        setData({ name: "", email: "", number_phone: "", address: "" });
+        setData({ name: customer.name, email: customer.email, number_phone: customer.number_phone, address: customer.address });
     };
 
     return (
         <Layout flash={flash}>
             <Head>
-                <title>Create Supplier | ARGEInventory</title>
+                <title>Create customer | ARGEInventory</title>
             </Head>
             <Sidebar />
             <section className="ml-80 p-8 relative">
                 <div className="mb-5">
-                    <h1 className="text-3xl font-bold">Supplier</h1>
-                    <p className="text-slate-500 dark:text-slate-400 text-lg">Add New Supplier</p>
+                    <h1 className="text-3xl font-bold">Customer</h1>
+                    <p className="text-slate-500 dark:text-slate-400 text-lg">Edit Current Customer</p>
                 </div>
                 <div className="bg-white dark:bg-slate-800 shadow-lg p-5 rounded-xl">
                     <div className="flex justify-between items-center mb-3">
-                        <p className="text-xl font-bold">Create Supplier</p>
+                        <p className="text-xl font-bold">Edit Customer</p>
                         <Link
-                            href={route("supplier.index")}
+                            href={route("customer.index")}
                             className="flex items-center gap-2 bg-slate-200 hover:bg-slate-300 dark:bg-slate-700 text-slate-500 dark:text-slate-400 px-3 py-2 rounded-lg font-bold transition-all"
                         >
                             <MdKeyboardArrowLeft className="font-bold text-xl" /> Back
@@ -61,7 +60,7 @@ const SupplierCreate = ({ flash }) => {
                                 type="text"
                                 name="name"
                                 label="Name"
-                                placeholder="Enter Supplier Name"
+                                placeholder="Enter Customer Name"
                                 required={true}
                                 onChange={setData}
                                 value={data.name}
@@ -72,7 +71,7 @@ const SupplierCreate = ({ flash }) => {
                                     type="email"
                                     name="email"
                                     label="Email"
-                                    placeholder="Enter Supplier Email"
+                                    placeholder="Enter Customer Email"
                                     required={true}
                                     onChange={setData}
                                     value={data.email}
@@ -92,7 +91,7 @@ const SupplierCreate = ({ flash }) => {
                             <TextAreaInput
                                 name="address"
                                 label="Address"
-                                placeholder="Enter Supplier Address"
+                                placeholder="Enter Customer Address"
                                 required={true}
                                 onChange={setData}
                                 value={data.address}
@@ -110,7 +109,7 @@ const SupplierCreate = ({ flash }) => {
                                     type="submit"
                                     className="bg-sky-500 hover:bg-sky-600 text-white dark:text-slate-800 px-5 py-2 rounded-lg font-bold transition-all"
                                 >
-                                    Add Supplier
+                                    Edit Customer
                                 </button>
                             </div>
                         </form>
@@ -121,4 +120,4 @@ const SupplierCreate = ({ flash }) => {
     );
 };
 
-export default SupplierCreate;
+export default CustomerEdit;

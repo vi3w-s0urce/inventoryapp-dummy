@@ -4,33 +4,30 @@ import Layout from "../../Layouts/Default";
 import { Head, Link } from "@inertiajs/react";
 import { useEffect, useState } from "react";
 import Sidebar from "../../Layouts/Sidebar";
-import { TbAdjustmentsHorizontal, TbDotsVertical, TbEdit, TbPlus, TbSearch, TbTrash } from "react-icons/tb";
+import { TbAdjustmentsHorizontal, TbDotsVertical, TbEdit, TbPlus, TbSearch, TbTrash, TbX } from "react-icons/tb";
 import { Table, Header, HeaderRow, Body, Row, HeaderCell, Cell } from "@table-library/react-table-library/table";
 import { useRowSelect } from "@table-library/react-table-library/select";
 import { useTheme } from "@table-library/react-table-library/theme";
 import { FaSort, FaSortDown, FaSortUp } from "react-icons/fa";
 import { AnimatePresence, motion } from "framer-motion";
-import TextInput from "../../Components/input/TextInput";
-import ActionButtonTable from "../../Components/button/ActionButtonTable";
-import ModalDelete from "../../Components/modal/ModalDelete";
+import TextInput from "../input/TextInput";
+import ActionButtonTable from "../button/ActionButtonTable";
+import ModalDelete from "./ModalDelete";
 import { tableRowsSizeOptions, tableStyle } from "../../config/tableConfig";
 import { usePagination } from "@table-library/react-table-library/pagination";
 import { useSort, HeaderCellSort, SortToggleType } from "@table-library/react-table-library/sort";
-import CheckboxInput from "../../Components/input/CheckboxInput";
+import CheckboxInput from "../input/CheckboxInput";
 import Select from "react-select";
-import PaginationButton from "../../Components/button/PaginationButton";
+import PaginationButton from "../button/PaginationButton";
 import classNames from "classnames";
 import NoData from "./../../../assets/image/NoData.svg";
 import { Inertia } from "@inertiajs/inertia";
-import SelectInput from "../../Components/input/SelectInput";
+import SelectInput from "../input/SelectInput";
+import { createPortal } from "react-dom";
+import toast, { Toaster } from 'react-hot-toast';
 
-const Product = ({ flash, products, filterSuppliers, filterCategories }) => {
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        dispatch(setCurrentRoute({ route: "product", subRoute: "master" }));
-    }, []);
-
+const ModalCart = ({ flash, products, filterSuppliers, filterCategories, closeModal, handleAddCart, cartData }) => {
+    const layout = document.getElementById("modal-root");
     const tableTheme = tableStyle("auto 1.5fr 1fr 1fr 1fr 1fr 0.5fr");
 
     const [productData, setProductData] = useState(products);
@@ -85,8 +82,6 @@ const Product = ({ flash, products, filterSuppliers, filterCategories }) => {
 
     const rowsSizeOptions = tableRowsSizeOptions();
 
-    const [rowsSize, setRowsSize] = useState(rowsSizeOptions[2].value);
-
     const data = {
         nodes: productData.filter((item) =>
             supplierFilter.bool && categoryFilter.bool
@@ -104,7 +99,7 @@ const Product = ({ flash, products, filterSuppliers, filterCategories }) => {
     const pagination = usePagination(data, {
         state: {
             page: 0,
-            size: rowsSize,
+            size: 5,
         },
     });
 
@@ -144,37 +139,52 @@ const Product = ({ flash, products, filterSuppliers, filterCategories }) => {
         }
     );
 
+    const handleAddToCart = (itemId) => {
+        if (cartData.find((item) => item.id == itemId)) {
+            toast.error('The selected item is already in the cart!');
+        } else {
+            handleAddCart(itemId);
+            closeModal();
+        }
+    }
+
+    const handleSelectedAddToCart = () => {
+        selectedItem.forEach((item) => {
+            handleAddCart(item);
+        })
+    }
+
+    console.log(selectedItem);
+
+    const [domReady, setDomReady] = useState(false);
+
+    useEffect(() => {
+        setDomReady(true);
+    }, []);
+
     return (
-        <Layout flash={flash}>
-            <Head>
-                <title>Product | ARGEInventory</title>
-            </Head>
-            <Sidebar />
-            <AnimatePresence>
-                {modalDelete ? (
-                    <ModalDelete
-                        itemID={modalDelete}
-                        closeModal={(id = null) => setModalDelete(id)}
-                        type="product"
-                        description="Are you sure to delete this product?"
-                    />
-                ) : (
-                    modalDeleteSelected && (
-                        <ModalDelete
-                            itemID={modalDeleteSelected}
-                            closeModal={(id = null) => setModalDeleteSelected(id)}
-                            type="product_selected"
-                            description={"Are you sure to delete " + selectedItem.length + " selected item products?"}
+        domReady &&
+        createPortal(
+            <div className="fixed top-0 left-0 h-screen w-screen z-50 flex justify-center items-center">
+                <motion.div
+                    className="fixed top-0 left-0 h-screen w-screen -z-10 bg-black bg-opacity-20"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                ></motion.div>
+                <motion.div
+                    initial={{ opacity: 0, scale: 0 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0 }}
+                    className="bg-white dark:bg-slate-800 shadow-lg p-5 rounded-xl"
+                >
+                    <div className="w-full mb-3 flex justify-between items-center border-b-2 pb-2">
+                        <p className="text-xl">Select Product</p>
+                        <TbX
+                            className="text-3xl p-1 text-slate-500 hover:bg-slate-200 rounded-lg transition-all cursor-pointer"
+                            onClick={closeModal}
                         />
-                    )
-                )}
-            </AnimatePresence>
-            <section className="ml-80 p-8 relative">
-                <div className="mb-5">
-                    <h1 className="text-3xl font-bold">Product</h1>
-                    <p className="text-slate-500 dark:text-slate-400 text-lg">List of All The Product</p>
-                </div>
-                <div className="bg-white dark:bg-slate-800 shadow-lg p-5 rounded-xl">
+                    </div>
                     <div className="flex justify-between items-center">
                         <p className="text-xl font-bold">
                             Products
@@ -185,16 +195,12 @@ const Product = ({ flash, products, filterSuppliers, filterCategories }) => {
                         <div className="flex items-center gap-3">
                             <AnimatePresence>
                                 {selectedItem.length > 0 && (
-                                    <motion.button
-                                        className="flex items-center gap-2 bg-red-400 dark:bg-red-500 text-white dark:text-slate-800 hover:bg-red-500 dark:hover:bg-red-600 px-3 py-2 rounded-lg font-bold whitespace-nowrap transition-all"
-                                        onClick={() => setModalDeleteSelected(selectedItem)}
-                                        initial={{ opacity: 0 }}
-                                        animate={{ opacity: 1 }}
-                                        exit={{ opacity: 0 }}
+                                    <button
+                                        onClick={handleSelectedAddToCart}
+                                        className="flex items-center gap-2 bg-emerald-400 dark:bg-emerald-500 text-white dark:text-slate-800 hover:bg-emerald-500 dark:hover:bg-emerald-600 px-3 py-2 rounded-lg font-bold whitespace-nowrap transition-all"
                                     >
-                                        <TbTrash className="font-bold text-xl" />
-                                        <span>{selectedItem.length}</span>Delete Selected
-                                    </motion.button>
+                                        <TbPlus className="font-bold text-xl" /> Add {selectedItem.length} Product To Cart
+                                    </button>
                                 )}
                             </AnimatePresence>
 
@@ -269,12 +275,6 @@ const Product = ({ flash, products, filterSuppliers, filterCategories }) => {
                                     )}
                                 </AnimatePresence>
                             </div>
-                            <Link
-                                href={route("product.create")}
-                                className="flex items-center gap-2 bg-emerald-400 dark:bg-emerald-500 text-white dark:text-slate-800 hover:bg-emerald-500 dark:hover:bg-emerald-600 px-3 py-2 rounded-lg font-bold whitespace-nowrap transition-all"
-                            >
-                                <TbPlus className="font-bold text-xl" /> Add Product
-                            </Link>
                         </div>
                     </div>
                     <div className="max-h-[38rem] relative">
@@ -420,12 +420,9 @@ const Product = ({ flash, products, filterSuppliers, filterCategories }) => {
                                                             transition={{ delay: 0.05 }}
                                                             className="flex gap-3 justify-center"
                                                         >
-                                                            <Link href={route("product.edit", item.id)}>
-                                                                <TbEdit className="text-3xl text-slate-500 dark:text-slate-400 hover:text-sky-500 transition-all" />
-                                                            </Link>
-                                                            <TbTrash
-                                                                className="text-3xl text-slate-500 dark:text-slate-400 hover:text-red-500 transition-all"
-                                                                onClick={() => setModalDelete(item.id)}
+                                                            <TbPlus
+                                                                className="text-4xl text-emerald-500 hover:bg-emerald-200 transition-all p-1 rounded-lg"
+                                                                onClick={() => handleAddToCart(item.id)}
                                                             />
                                                         </motion.div>
                                                     </Cell>
@@ -450,31 +447,6 @@ const Product = ({ flash, products, filterSuppliers, filterCategories }) => {
                         </Table>
                     </div>
                     <div className="w-full mt-5 flex justify-between items-center">
-                        <div className="flex items-center gap-3">
-                            <span className="text-slate-500 dark:text-slate-400">Rows per page</span>
-                            <Select
-                                menuPlacement="top"
-                                options={rowsSizeOptions}
-                                defaultValue={rowsSizeOptions.find((options) => options.value === rowsSize)}
-                                onChange={handleRowsSizeChange}
-                                isSearchable={false}
-                                classNames={{
-                                    control: ({ isFocused }) =>
-                                        classNames(
-                                            "!border-2 !outline-none !rounded-xl dark:!bg-slate-800",
-                                            isFocused
-                                                ? "!border-sky-200 dark:!border-sky-500 dark:!border-opacity-20"
-                                                : "!border-slate-200 dark:!border-slate-600"
-                                        ),
-                                    singleValue: () => classNames("!text-slate-500 dark:!text-slate-400"),
-                                    dropdownIndicator: () => classNames("dark:!text-slate-400"),
-                                    indicatorSeparator: () => classNames("hidden"),
-                                    menu: () => classNames("!rounded-xl dark:!bg-slate-800"),
-                                    option: ({ isSelected, isFocused }) => classNames(isSelected && "!bg-sky-400", isFocused && "dark:!bg-slate-600"),
-                                }}
-                                classNamePrefix="react-select"
-                            />
-                        </div>
                         <PaginationButton pagination={pagination} data={data} />
                         <div className="text-slate-500 dark:text-slate-400 flex items-center justify-end gap-1 w-52">
                             Total page
@@ -483,10 +455,11 @@ const Product = ({ flash, products, filterSuppliers, filterCategories }) => {
                             </span>
                         </div>
                     </div>
-                </div>
-            </section>
-        </Layout>
+                </motion.div>
+            </div>,
+            layout
+        )
     );
 };
 
-export default Product;
+export default ModalCart;

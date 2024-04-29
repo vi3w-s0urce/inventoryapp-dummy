@@ -15,7 +15,7 @@ const Layout = ({ children, flash = false }) => {
 
     return (
         <main className={`min-h-screen bg-slate-100 text-slate-900 ${darkMode && "dark"} dark:bg-slate-900 dark:text-slate-200`} id="modal-root">
-            <Toaster />
+            <Toaster toastOptions={{ className: 'dark:!bg-slate-800 dark:!text-slate-200' }} />
             <motion.div
                 className="bg-sky-200 w-[500px] h-[500px] absolute left-48 -top-96 rounded-full bg-opacity-50 dark:bg-sky-900"
                 initial={{ y: -80 }}

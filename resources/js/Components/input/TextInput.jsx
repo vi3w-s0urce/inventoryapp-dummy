@@ -2,7 +2,7 @@ import { useState } from "react";
 import { TbAlertCircle } from "react-icons/tb";
 import { motion } from "framer-motion";
 
-const TextInput = ({ name, type = "text", placeholder = null, value = null, label = null, required = false, error = null, onChange }) => {
+const TextInput = ({ name, type = "text", placeholder = null, value = null, label = null, required = false, error = null, login = false, onChange }) => {
     const [IsInvalid, setIsInvalid] = useState(false)
 
     const handleChange = (e) => {
@@ -14,7 +14,7 @@ const TextInput = ({ name, type = "text", placeholder = null, value = null, labe
         <div className="flex flex-col w-full">
             <label htmlFor={name} className="mb-1">
                 {label}
-                {required && name !== "email" ? <span className="text-sm text-red-500 font-bold"> *</span> : null}
+                {required && !login ? <span className="text-sm text-red-500 font-bold"> *</span> : null}
             </label>
             <input
                 type={type}
@@ -22,7 +22,7 @@ const TextInput = ({ name, type = "text", placeholder = null, value = null, labe
                 id={name}
                 value={value}
                 placeholder={placeholder}
-                className={`dark:bg-slate-700 w-full px-3 py-2 border-2 dark:border-slate-600 rounded-lg outline-none focus:border-sky-300 transition-all ${IsInvalid || error ? "border-red-300 focus:border-red-300" : null}`}
+                className={`dark:bg-slate-800 w-full px-3 py-2 border-2 dark:border-slate-600 rounded-lg outline-none focus:border-sky-300 dark:focus:border-sky-600 transition-all ${IsInvalid || error ? "border-red-300 focus:border-red-300 dark:!border-red-800" : null}`}
                 required={required}
                 onChange={handleChange}
                 onInvalid={() => setIsInvalid(true)}

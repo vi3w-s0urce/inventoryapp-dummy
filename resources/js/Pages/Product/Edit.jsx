@@ -12,30 +12,38 @@ import SelectInput from "../../Components/input/SelectInput";
 import NumberInput from "../../Components/input/NumberInput";
 import ImageInput from "../../Components/input/ImageInput";
 
-const ProductCreate = ({ flash, suppliers, categories }) => {
+const ProductEdit = ({ flash, product, suppliers, categories }) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(setCurrentRoute({ route: "product", subRoute: "master" }));
     }, []);
 
-    const { data, setData, post, processing, errors } = useForm({
-        name: "",
-        price: null,
-        stock: null,
-        supplier_id: null,
-        product_category_id: null,
-        description: "",
-        image: null,
+    const { data, setData, post, put, processing, errors } = useForm({
+        name: product.name,
+        price: product.price,
+        stock: product.stock,
+        supplier_id: product.supplier.id,
+        product_category_id: product.product_category ? product.product_category.id : null,
+        description: product.description,
+        image: "old",
     });
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        post(route("product.store"));
+        post(route('product.update', product.id));
     };
 
     const handleReset = () => {
-        setData({ name: "", price: null, stock: null, supplier_id: null, product_category_id: null, description: "", image: null });
+        setData({
+            name: product.name,
+            price: product.price,
+            stock: product.stock,
+            supplier_id: product.supplier.id,
+            product_category_id: product.product_category ? product.product_category.id : null,
+            description: product.description,
+            image: "old",
+        });
     };
 
     let supplierOptions = [];
@@ -79,17 +87,17 @@ const ProductCreate = ({ flash, suppliers, categories }) => {
     return (
         <Layout flash={flash}>
             <Head>
-                <title>Create Product | ARGEInventory</title>
+                <title>Edit Product | ARGEInventory</title>
             </Head>
             <Sidebar />
             <section className="ml-80 p-8 relative">
                 <div className="mb-5">
                     <h1 className="text-3xl font-bold">Product</h1>
-                    <p className="text-slate-500 dark:text-slate-400 text-lg">Add New Product</p>
+                    <p className="text-slate-500 dark:text-slate-400 text-lg">Edit Current Product</p>
                 </div>
                 <div className="bg-white dark:bg-slate-800 shadow-lg p-5 rounded-xl">
                     <div className="flex justify-between items-center mb-3">
-                        <p className="text-xl font-bold">Create Product</p>
+                        <p className="text-xl font-bold">Edit Product</p>
                         <Link
                             href={route("product.index")}
                             className="flex items-center gap-2 bg-slate-200 hover:bg-slate-300 dark:bg-slate-700 text-slate-500 dark:text-slate-400 px-3 py-2 rounded-lg font-bold transition-all"
@@ -172,6 +180,7 @@ const ProductCreate = ({ flash, suppliers, categories }) => {
                                         label="Photo"
                                         placeholder="Add photo of product"
                                         required={true}
+                                        edit={"/storage/productImages/" + product.image}
                                         onChange={setData}
                                         value={data.image}
                                         error={errors.image && errors.image}
@@ -190,7 +199,7 @@ const ProductCreate = ({ flash, suppliers, categories }) => {
                                     type="submit"
                                     className="bg-sky-500 hover:bg-sky-600 text-white dark:text-slate-800 px-5 py-2 rounded-lg font-bold transition-all"
                                 >
-                                    Add Product
+                                    Edit Product
                                 </button>
                             </div>
                         </form>
@@ -201,4 +210,4 @@ const ProductCreate = ({ flash, suppliers, categories }) => {
     );
 };
 
-export default ProductCreate;
+export default ProductEdit;
