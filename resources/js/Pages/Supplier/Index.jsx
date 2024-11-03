@@ -88,7 +88,7 @@ const Supplier = ({ flash, suppliers }) => {
     return (
         <Layout flash={flash}>
             <Head>
-                <title>Supplier | ARGEInventory</title>
+                <title>Supplier | InventoryApp</title>
             </Head>
             <Sidebar />
             <AnimatePresence>

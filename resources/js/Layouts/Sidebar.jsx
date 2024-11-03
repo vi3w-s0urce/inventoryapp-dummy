@@ -56,7 +56,7 @@ const Sidebar = () => {
                     <div className="flex items-center">
                         <motion.img src={Logo} className="w-6 mr-2" initial={{ scale: 0 }} animate={{ scale: 1 }} />
                         <motion.p className="text-xl font-bold" initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }}>
-                            <span className="text-sky-500">ARGE</span>Inventory
+                            <span className="text-sky-500">Inventory</span>App
                         </motion.p>
                     </div>
                     <motion.div whileHover={{ x: -5 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>

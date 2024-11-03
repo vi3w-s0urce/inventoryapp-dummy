@@ -37,7 +37,7 @@ const CustomerEdit = ({ flash, supplier }) => {
     return (
         <Layout flash={flash}>
             <Head>
-                <title>Create Supplier | ARGEInventory</title>
+                <title>Create Supplier | InventoryApp</title>
             </Head>
             <Sidebar />
             <section className="ml-80 p-8 relative">

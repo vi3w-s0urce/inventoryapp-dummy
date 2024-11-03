@@ -108,7 +108,7 @@ const Dashboard = ({ flash, user, isAdmin, remember }) => {
     return (
         <Layout flash={flash}>
             <Head>
-                <title>Dashboard | ARGEInventory</title>
+                <title>Dashboard | InventoryApp</title>
             </Head>
             <Sidebar />
             <section className="ml-80 p-8 relative">

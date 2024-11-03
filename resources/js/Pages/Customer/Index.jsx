@@ -85,7 +85,7 @@ const Customer = ({ flash, customers }) => {
     return (
         <Layout flash={flash}>
             <Head>
-                <title>Customer | ARGEInventory</title>
+                <title>Customer | InventoryApp</title>
             </Head>
             <Sidebar />
             <AnimatePresence>

@@ -13,10 +13,13 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->dateTime('order_date');
+            $table->string('order_name');
             $table->enum('status', ['accepted', 'rejected', 'waiting'])->default('waiting');
             $table->index('customer_id');
             $table->foreignId('customer_id')->references('id')->on('customers');
+            $table->bigInteger('total_product');
+            $table->bigInteger('total_stock');
+            $table->bigInteger('total_price');
             $table->timestamps();
         });
     }

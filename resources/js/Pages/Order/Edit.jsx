@@ -87,7 +87,7 @@ const ProductEdit = ({ flash, product, suppliers, categories,  }) => {
     return (
         <Layout flash={flash}>
             <Head>
-                <title>Edit Product | ARGEInventory</title>
+                <title>Edit Product | InventoryApp</title>
             </Head>
             <Sidebar />
             <section className="ml-80 p-8 relative">

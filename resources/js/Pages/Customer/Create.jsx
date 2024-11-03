@@ -37,7 +37,7 @@ const CustomerCreate = ({ flash }) => {
     return (
         <Layout flash={flash}>
             <Head>
-                <title>Create Customer | ARGEInventory</title>
+                <title>Create Customer | InventoryApp</title>
             </Head>
             <Sidebar />
             <section className="ml-80 p-8 relative">

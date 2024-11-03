@@ -128,7 +128,7 @@ const ProductCategoryCreate = ({ flash, products }) => {
     return (
         <Layout flash={flash}>
             <Head>
-                <title>Create Category | ARGEInventory</title>
+                <title>Create Category | InventoryApp</title>
             </Head>
             <Sidebar />
             <section className="ml-80 p-8 relative">

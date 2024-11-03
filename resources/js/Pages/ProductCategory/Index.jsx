@@ -84,7 +84,7 @@ const ProductCategory = ({ flash, categories }) => {
     return (
         <Layout flash={flash}>
             <Head>
-                <title>Product Category | ARGEInventory</title>
+                <title>Product Category | InventoryApp</title>
             </Head>
             <Sidebar />
             <AnimatePresence>

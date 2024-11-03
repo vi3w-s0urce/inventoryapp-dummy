@@ -147,7 +147,7 @@ const Product = ({ flash, products, filterSuppliers, filterCategories }) => {
     return (
         <Layout flash={flash}>
             <Head>
-                <title>Product | ARGEInventory</title>
+                <title>Product | InventoryApp</title>
             </Head>
             <Sidebar />
             <AnimatePresence>
@@ -329,7 +329,7 @@ const Product = ({ flash, products, filterSuppliers, filterCategories }) => {
                                                     item={item}
                                                     className="dark:!bg-slate-800 hover:bg-slate-100 dark:hover:!bg-slate-700 cursor-pointer transition-all"
                                                 >
-                                                    <Cell className="!p-3 rounded-s-xl">
+                                                    <Cell className="!p-3 ">
                                                         <CheckboxInput
                                                             name={"tableItemSelect" + item.id}
                                                             checked={select.state.ids.includes(item.id)}

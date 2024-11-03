@@ -139,11 +139,11 @@ const ModalCart = ({ flash, products, filterSuppliers, filterCategories, closeMo
         }
     );
 
-    const handleAddToCart = (itemId) => {
+    const handleAddToCart = (itemId, itemPrice, itemName) => {
         if (cartData.find((item) => item.id == itemId)) {
             toast.error('The selected item is already in the cart!');
         } else {
-            handleAddCart(itemId);
+            handleAddCart(itemId, itemPrice, itemName);
             closeModal();
         }
     }
@@ -153,8 +153,6 @@ const ModalCart = ({ flash, products, filterSuppliers, filterCategories, closeMo
             handleAddCart(item);
         })
     }
-
-    console.log(selectedItem);
 
     const [domReady, setDomReady] = useState(false);
 
@@ -176,7 +174,7 @@ const ModalCart = ({ flash, products, filterSuppliers, filterCategories, closeMo
                     initial={{ opacity: 0, scale: 0 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0 }}
-                    className="bg-white dark:bg-slate-800 shadow-lg p-5 rounded-xl"
+                    className="bg-white dark:bg-slate-800 shadow-lg p-5 rounded-xl max-w-[80%]"
                 >
                     <div className="w-full mb-3 flex justify-between items-center border-b-2 pb-2">
                         <p className="text-xl">Select Product</p>
@@ -422,7 +420,7 @@ const ModalCart = ({ flash, products, filterSuppliers, filterCategories, closeMo
                                                         >
                                                             <TbPlus
                                                                 className="text-4xl text-emerald-500 hover:bg-emerald-200 transition-all p-1 rounded-lg"
-                                                                onClick={() => handleAddToCart(item.id)}
+                                                                onClick={() => handleAddToCart(item.id, item.price, item.name)}
                                                             />
                                                         </motion.div>
                                                     </Cell>

@@ -55,8 +55,8 @@ const NumberInput = ({
         thousandsSeparatorSymbol: ".",
         allowDecimal: true,
         decimalSymbol: ",",
-        decimalLimit: 2, // how many digits allowed after the decimal
-        integerLimit: 12, // limit length of integer numbers
+        decimalLimit: 2,
+        integerLimit: 12,
         allowNegative: false,
         allowLeadingZeroes: false,
     };

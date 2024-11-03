@@ -12,6 +12,7 @@ use App\Models\User;
 use Faker\Factory;
 use Illuminate\Database\Seeder;
 
+
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -22,17 +23,10 @@ class DatabaseSeeder extends Seeder
         $faker = Factory::create();
 
         User::create([
-            'name' => 'Luthfi Tampan',
-            'email' => 'admin@admin.com',
+            'name' => 'Visitor',
+            'email' => 'visitor@example.com',
             'roles' => 'admin',
-            'password' => 'admin',
-        ]);
-
-        User::create([
-            'name' => 'Alfi Tampan',
-            'email' => 'employee@employee.com',
-            'roles' => 'employee',
-            'password' => 'employee',
+            'password' => 'visitor',
         ]);
 
         // ProductCategory::create([

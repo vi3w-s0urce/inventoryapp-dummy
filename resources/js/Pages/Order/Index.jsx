@@ -24,16 +24,16 @@ import NoData from "./../../../assets/image/NoData.svg";
 import { Inertia } from "@inertiajs/inertia";
 import SelectInput from "../../Components/input/SelectInput";
 
-const Order = ({ flash, }) => {
+const Order = ({ flash, orders }) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(setCurrentRoute({ route: "order", subRoute: null }));
     }, []);
 
-    const tableTheme = tableStyle("auto 1.5fr 1fr 1fr 1fr 1fr 0.5fr");
+    const tableTheme = tableStyle("1.5fr 1fr 1fr 1fr 1fr 1fr", 'order-table');
 
-    const [orderData, setOrdreData] = useState([]);
+    const [orderData, setOrdreData] = useState(orders);
     const [search, setSearch] = useState("");
     const [modalDelete, setModalDelete] = useState(null);
     const [modalDeleteSelected, setModalDeleteSelected] = useState(null);
@@ -79,7 +79,7 @@ const Order = ({ flash, }) => {
 
     const data = {
         nodes: orderData.filter((item) =>
-            item.name.toLowerCase().includes(search.toLowerCase())
+            item.order_name.toLowerCase().includes(search.toLowerCase())
         ),
     };
 
@@ -129,7 +129,7 @@ const Order = ({ flash, }) => {
     return (
         <Layout flash={flash}>
             <Head>
-                <title>Order | ARGEInventory</title>
+                <title>Order | InventoryApp</title>
             </Head>
             <Sidebar />
             <AnimatePresence>
@@ -275,31 +275,21 @@ const Order = ({ flash, }) => {
                                             className="!bg-slate-100 dark:!bg-slate-700 text-slate-500 dark:text-slate-400"
                                             layout={{ custom: true }}
                                         >
-                                            <HeaderCell className="border-s-2 border-y-2 rounded-s-xl !py-2 !px-3 dark:border-slate-600">
-                                                <CheckboxInput
-                                                    name="tableSelect"
-                                                    checked={select.state.all}
-                                                    indeterminate={!select.state.all && !select.state.none}
-                                                    onChange={select.fns.onToggleAll}
-                                                />
-                                            </HeaderCell>
                                             <HeaderCellSort
-                                                className="!py-2 !px-3 border-y-2 border-slate-200 dark:border-slate-600 hover:text-sky-500 transition-all"
+                                                className="border-s-2 border-y-2 rounded-s-xl !py-2 !px-3 dark:border-slate-600 hover:text-sky-500 transition-all"
                                                 sortKey="NAME"
                                             >
-                                                Product
+                                                Order Name
                                             </HeaderCellSort>
                                             <HeaderCellSort className="!py-2 !px-3 border-y-2 dark:border-slate-600" sortKey="PRICE">
-                                                Price
+                                                Customer
                                             </HeaderCellSort>
                                             <HeaderCellSort className="!py-2 !px-3 border-y-2 dark:border-slate-600" sortKey="STOCK">
-                                                Stock
+                                                Total Product
                                             </HeaderCellSort>
-                                            <HeaderCell className="!py-2 !px-3 border-y-2 dark:border-slate-600">Category</HeaderCell>
-                                            <HeaderCell className="!py-2 !px-3 border-y-2 dark:border-slate-600">Supplier</HeaderCell>
-                                            <HeaderCell className="!py-2 !px-3 rounded-r-xl border-y-2 border-r-2 border-slate-200 dark:border-slate-600">
-                                                Action
-                                            </HeaderCell>
+                                            <HeaderCell className="!py-2 !px-3 border-y-2 dark:border-slate-600">Total Stock</HeaderCell>
+                                            <HeaderCell className="!py-2 !px-3 border-y-2 dark:border-slate-600">Total Price</HeaderCell>
+                                            <HeaderCell className="!py-2 !px-3 rounded-r-xl border-y-2 border-r-2 border-slate-200 dark:border-slate-600">Status</HeaderCell>
                                         </HeaderRow>
                                     </Header>
                                     <Body>
@@ -311,24 +301,12 @@ const Order = ({ flash, }) => {
                                                     className="dark:!bg-slate-800 hover:bg-slate-100 dark:hover:!bg-slate-700 cursor-pointer transition-all"
                                                 >
                                                     <Cell className="!p-3 rounded-s-xl">
-                                                        <CheckboxInput
-                                                            name={"tableItemSelect" + item.id}
-                                                            checked={select.state.ids.includes(item.id)}
-                                                            onChange={() => select.fns.onToggleById(item.id)}
-                                                        />
-                                                    </Cell>
-                                                    <Cell className="!p-3">
                                                         <motion.div
                                                             initial={{ opacity: 0, y: 10 }}
                                                             whileInView={{ opacity: 1, y: 0 }}
                                                             transition={{ delay: 0.05 }}
-                                                            className="flex justify-start gap-3 items-center whitespace-normal"
                                                         >
-                                                            <img
-                                                                src={"/storage/productImages/" + item.image}
-                                                                className="w-20 h-20 object-cover rounded-xl"
-                                                            />
-                                                            {item.name}
+                                                            {item.order_name}
                                                         </motion.div>
                                                     </Cell>
                                                     <Cell className="!p-3">
@@ -338,7 +316,7 @@ const Order = ({ flash, }) => {
                                                             whileInView={{ opacity: 1, y: 0 }}
                                                             transition={{ delay: 0.05 }}
                                                         >
-                                                            Rp{item.price.toLocaleString()}
+                                                            {item.customer_id}
                                                         </motion.div>
                                                     </Cell>
                                                     <Cell className="!p-3">
@@ -347,43 +325,8 @@ const Order = ({ flash, }) => {
                                                             whileInView={{ opacity: 1, y: 0 }}
                                                             transition={{ delay: 0.05 }}
                                                         >
-                                                            <span className="text-lg">{item.stock}</span>
+                                                            {item.total_product}
                                                         </motion.div>
-                                                    </Cell>
-                                                    <Cell className="!p-3">
-                                                        {item.product_category_id ? (
-                                                            <motion.div
-                                                                initial={{ opacity: 0, y: 10 }}
-                                                                whileInView={{ opacity: 1, y: 0 }}
-                                                                transition={{ delay: 0.05 }}
-                                                                className={`w-fit px-3 font-bold rounded-lg ${
-                                                                    item.product_category.color == "Red"
-                                                                        ? "bg-red-200 text-red-500 dark:bg-opacity-20 dark:bg-red-500"
-                                                                        : item.product_category.color == "Green"
-                                                                        ? "bg-green-200 text-green-500 dark:bg-opacity-20 dark:bg-green-500"
-                                                                        : item.product_category.color == "Blue"
-                                                                        ? "bg-blue-200 text-blue-500 dark:bg-opacity-20 dark:bg-blue-500"
-                                                                        : item.product_category.color == "Yellow"
-                                                                        ? "bg-yellow-200 text-yellow-500 dark:bg-opacity-20 dark:bg-yellow-500"
-                                                                        : item.product_category.color == "Purple"
-                                                                        ? "bg-purple-200 text-purple-500 dark:bg-opacity-20 dark:bg-purple-500"
-                                                                        : item.product_category.color == "Cyan"
-                                                                        ? "bg-cyan-200 text-cyan-500 dark:bg-opacity-20 dark:bg-cyan-500"
-                                                                        : null
-                                                                }`}
-                                                            >
-                                                                {item.product_category.name}
-                                                            </motion.div>
-                                                        ) : (
-                                                            <motion.div
-                                                                initial={{ opacity: 0, y: 10 }}
-                                                                whileInView={{ opacity: 1, y: 0 }}
-                                                                transition={{ delay: 0.05 }}
-                                                                className="w-fit px-3 font-bold rounded-lg bg-slate-200 text-slate-500 dark:bg-opacity-20 dark:bg-slate-400 dark:text-slate-400"
-                                                            >
-                                                                <span className="text-lg">None</span>
-                                                            </motion.div>
-                                                        )}
                                                     </Cell>
                                                     <Cell className="!p-3">
                                                         <motion.div
@@ -391,7 +334,7 @@ const Order = ({ flash, }) => {
                                                             whileInView={{ opacity: 1, y: 0 }}
                                                             transition={{ delay: 0.05 }}
                                                         >
-                                                            <span className="text-lg">{item.supplier.name}</span>
+                                                            {item.total_stock}
                                                         </motion.div>
                                                     </Cell>
                                                     <Cell className="!p-3 rounded-r-xl">
@@ -399,15 +342,17 @@ const Order = ({ flash, }) => {
                                                             initial={{ opacity: 0, y: 10 }}
                                                             whileInView={{ opacity: 1, y: 0 }}
                                                             transition={{ delay: 0.05 }}
-                                                            className="flex gap-3 justify-center"
                                                         >
-                                                            <Link href={route("order.edit", item.id)}>
-                                                                <TbEdit className="text-3xl text-slate-500 dark:text-slate-400 hover:text-sky-500 transition-all" />
-                                                            </Link>
-                                                            <TbTrash
-                                                                className="text-3xl text-slate-500 dark:text-slate-400 hover:text-red-500 transition-all"
-                                                                onClick={() => setModalDelete(item.id)}
-                                                            />
+                                                            {item.total_price}
+                                                        </motion.div>
+                                                    </Cell>
+                                                    <Cell className="!p-3 rounded-r-xl">
+                                                        <motion.div
+                                                            initial={{ opacity: 0, y: 10 }}
+                                                            whileInView={{ opacity: 1, y: 0 }}
+                                                            transition={{ delay: 0.05 }}
+                                                        >
+                                                            {item.status}
                                                         </motion.div>
                                                     </Cell>
                                                 </Row>

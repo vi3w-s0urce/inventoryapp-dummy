@@ -1,7 +1,7 @@
 import { useTheme } from "@table-library/react-table-library/theme";
 import { useSelector } from "react-redux";
 
-export const tableStyle = (layout) => {
+export const tableStyle = (layout, type = null) => {
     const darkMode = useSelector((state) => state.darkMode);
 
     const tableTheme = useTheme({
@@ -51,6 +51,47 @@ export const tableStyle = (layout) => {
         `,
     });
 
+    const orderTableTheme = useTheme({
+        Table: `
+            ::-webkit-scrollbar {
+                width: 10px;
+                padding: 100px
+            }
+          
+            ::-webkit-scrollbar-track {
+                background-color: #e2e8f0;
+                border-radius: 10px;
+            }
+           
+            ::-webkit-scrollbar-thumb {
+                background-color: #64748b; 
+                border-radius: 10px;
+            }
+            
+            ::-webkit-scrollbar-thumb:hover {
+                background-color: #0ea5e9; 
+            }
+
+            --data-table-library_grid-template-columns: ${layout};
+        `,
+        Row: `
+            &:not(:last-of-type) > .td {
+                border-bottom: 1px solid #e2e8f0;
+            }
+            &.row-select-selected {
+                background-color: #e2e8f0;
+            }
+            &.row-select-single-selected {
+                background-color: #e0f2fe;
+            }
+        `,
+        BaseCell: `
+            &:last-of-type {
+                text-align: center;
+            },
+        `,
+    });
+
     if (darkMode) {
         tableTheme.Row = `
             &:not(:last-of-type) > .td {
@@ -87,7 +128,11 @@ export const tableStyle = (layout) => {
         `;
     }
 
-    return tableTheme;
+    if (type == 'order-table') {
+        return orderTableTheme;
+    } else {
+        return tableTheme;
+    }
 };
 
 export const tableRowsSizeOptions = () => {

@@ -21,6 +21,7 @@ import NoData from "./../../../assets/image/NoData.svg";
 import CheckboxInput from "../../Components/input/CheckboxInput";
 import ModalProduct from "../../Components/modal/ModalCart";
 import EmptyCart from "../../../assets/image/EmptyCart.svg";
+import ModalConfirm from "../../Components/modal/ModalConfirm";
 
 const OrderCreate = ({ flash, products, filterSuppliers, filterCategories, customer }) => {
     const dispatch = useDispatch();
@@ -34,16 +35,26 @@ const OrderCreate = ({ flash, products, filterSuppliers, filterCategories, custo
     const [productsData, setProductsData] = useState(products);
     const [cartData, setCartData] = useState([]);
     const [modalProduct, setModalProduct] = useState(true);
+    const [modalConfirm, setModalConfirm] = useState(false);
     const [selectedItem, setSelectedItem] = useState([]);
-    const [totalProduct, setTotalProduct] = useState(0);
-    const [totalStock, setTotalStock] = useState(0);
-    const [totalPrice, setTotalPrice] = useState(0);
+    const [total_product, settotal_product] = useState(0);
+    const [total_stock, settotal_stock] = useState(0);
+    const [total_price, settotal_price] = useState(0);
 
-    const handleAddCart = (itemId) => {
-        setCartData([...cartData, { id: itemId, qty: 0, totalPrice: 0 }]);
+    const { data, setData, post, processing, errors } = useForm({
+        order_name: "",
+        customer_id: null,
+        total_product: total_product,
+        total_stock: total_stock,
+        total_price: total_price,
+        cartData: cartData,
+    });
+
+    const handleAddCart = (itemId, itemPrice, itemName) => {
+        setCartData([...cartData, { product_id: itemId, product_name: itemName, product_price: itemPrice, qty: null, total_price: 0 }]);
     };
     
-    const tableData = { nodes: productsData.filter((item) => cartData.map((cartItem) => cartItem.id).includes(item.id)) };
+    const tableData = { nodes: productsData.filter((item) => cartData.map((cartItem) => cartItem.product_id).includes(item.id)) };
     
     const onSelectChange = (action, state) => {
         setSelectedItem(state.ids);
@@ -51,14 +62,23 @@ const OrderCreate = ({ flash, products, filterSuppliers, filterCategories, custo
 
     useEffect(() => {
         const totalQty = cartData.reduce((accumulator, currentValue) => accumulator + currentValue.qty, 0);
-        const allTotalPrice = cartData.reduce((accumulator, currentValue) => accumulator + currentValue.totalPrice, 0);
+        const alltotal_price = cartData.reduce((accumulator, currentValue) => accumulator + currentValue.total_price, 0);
         
-        setTotalProduct(cartData.length);
-        setTotalStock(totalQty);
-        setTotalPrice(allTotalPrice);
+        settotal_product(cartData.length);
+        settotal_stock(!isNaN(totalQty) ? totalQty : 0);
+        settotal_price(alltotal_price);
+        
+    }, [cartData, cartData.length])
 
-        console.log(totalQty);
-    }, [cartData])
+    useEffect(() => {
+        setData({
+            ...data,
+            total_price: total_price,
+            total_product: total_product,
+            total_stock: total_stock,
+            cartData: cartData,
+        });
+    }, [total_product, total_price, total_stock, cartData])
     
     const select = useRowSelect(tableData, {
         onChange: onSelectChange,
@@ -85,12 +105,12 @@ const OrderCreate = ({ flash, products, filterSuppliers, filterCategories, custo
 
     const onChangeQTY = (itemID, qty) => {
         const dataSelected = tableData.nodes
-        const indexTotalPrice = dataSelected.findIndex(item => item.id === itemID);
+        const indextotal_price = dataSelected.findIndex(item => item.id === itemID);
 
         setCartData((prevCartData) => {
             return prevCartData.map((item) => {
-                if (item.id === itemID) {
-                    return { ...item, qty: parseInt(qty), totalPrice: parseInt(dataSelected[indexTotalPrice].price * qty) };
+                if (item.product_id === itemID) {
+                    return { ...item, qty: parseInt(qty), total_price: parseInt(dataSelected[indextotal_price].price * qty) };
                 }
                 return item;
             });
@@ -98,7 +118,7 @@ const OrderCreate = ({ flash, products, filterSuppliers, filterCategories, custo
     }
 
     const removeCartItem = (itemID) => {
-        const indexToRemove = cartData.findIndex(item => item.id === itemID);
+        const indexToRemove = cartData.findIndex(item => item.product_id === itemID);
 
         if (indexToRemove !== -1) {
             cartData.splice(indexToRemove, 1);
@@ -106,38 +126,34 @@ const OrderCreate = ({ flash, products, filterSuppliers, filterCategories, custo
     }
 
     const removeAllCartItem = () => {
-        const updatedItems = cartData.filter((item) => !selectedItem.includes(item.id));
+        const updatedItems = cartData.filter((item) => !selectedItem.includes(item.product_id));
         setCartData(updatedItems);
     };
 
-    const { data, setData, post, processing, errors } = useForm({
-        order_name: "",
-        customer_id: null,
-        order_date: null,
-        totalProduct: totalProduct,
-        totalStock: totalStock,
-        totalPrice: totalPrice,
-        cartData: cartData,
-    });
-
     const handleSubmit = (e) => {
         e.preventDefault();
-        post(route("order.store"));
+        setModalConfirm(true);
     };
+
+    const submitForm = () => {
+        post(route("order.store"));
+    }
 
     let customerOptions = [];
     customer.forEach((customer) => {
         customerOptions.push({ value: customer.id, label: customer.name });
     });
 
+    console.log(cartData);
+
     return (
         <Layout flash={flash}>
             <Head>
-                <title>Create Order | ARGEInventory</title>
+                <title>Create Order | InventoryApp</title>
             </Head>
             <Sidebar />
             <AnimatePresence>
-                {modalProduct && (
+                {modalProduct ? (
                     <ModalProduct
                         products={products}
                         closeModal={() => setModalProduct(false)}
@@ -146,7 +162,14 @@ const OrderCreate = ({ flash, products, filterSuppliers, filterCategories, custo
                         handleAddCart={handleAddCart}
                         cartData={cartData}
                     />
-                )}
+                ) : modalConfirm ? (
+                    <ModalConfirm 
+                        closeModal={() => setModalConfirm(false)}
+                        title={"Confirm Order"}
+                        description={"If an order has been made, the product stock will decrease unless the order status is set to cancelled."}
+                        action={() => submitForm()}
+                    />
+                ) : null }
             </AnimatePresence>
             <section className="ml-80 p-8 relative">
                 <div className="mb-5">
@@ -283,7 +306,7 @@ const OrderCreate = ({ flash, products, filterSuppliers, filterCategories, custo
                                                                             whileInView={{ opacity: 1, y: 0 }}
                                                                             transition={{ delay: 0.05 }}
                                                                         >
-                                                                            <NumberInput name="qty" qty={item.id} min={1} max={item.stock} required={true} onChange={onChangeQTY} />
+                                                                            <NumberInput name="qty" qty={item.id} min={1} max={item.stock} value={!isNaN(cartData.find(cart => cart.product_id == item.id).qty) ? cartData.find(cart => cart.product_id == item.id).qty : 0} required={true} onChange={onChangeQTY} />
                                                                         </motion.div>
                                                                     </Cell>
                                                                     <Cell className="!p-3">
@@ -292,7 +315,7 @@ const OrderCreate = ({ flash, products, filterSuppliers, filterCategories, custo
                                                                             whileInView={{ opacity: 1, y: 0 }}
                                                                             transition={{ delay: 0.05 }}
                                                                         >
-                                                                            Rp{cartData.find(cart => cart.id === item.id).totalPrice.toLocaleString()}
+                                                                            Rp{cartData.find(cart => cart.product_id === item.id).total_price.toLocaleString()}
                                                                         </motion.div>
                                                                     </Cell>
                                                                     <Cell className="!p-3 rounded-r-xl">
@@ -356,15 +379,15 @@ const OrderCreate = ({ flash, products, filterSuppliers, filterCategories, custo
                                         <p className="text-xl font-bold mb-2">Order Details</p>
                                         <div className="w-full flex justify-between text-lg">
                                             <p>Total Product</p>
-                                            <span>{totalProduct}</span>
+                                            <span>{total_product}</span>
                                         </div>
                                         <div className="w-full flex justify-between text-lg">
                                             <p>Total QTY Stock</p>
-                                            <span>{totalStock}</span>
+                                            <span>{total_stock}</span>
                                         </div>
                                         <div className="w-full flex justify-between text-lg">
                                             <p>Total Price</p>
-                                            <span>Rp.{totalPrice.toLocaleString()}</span>
+                                            <span>Rp.{total_price.toLocaleString()}</span>
                                         </div>
                                     </div>
                                 </div>
