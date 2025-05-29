@@ -1,5 +1,5 @@
 import { Head } from "@inertiajs/react";
-import { TbBox, TbBoxSeam, TbShoppingBag, TbShoppingCart } from "react-icons/tb";
+import { TbBox, TbBoxSeam, TbShoppingBag, TbShoppingCart, TbUser, TbUsers } from "react-icons/tb";
 import { motion } from "framer-motion";
 import { Doughnut, Line } from "react-chartjs-2";
 import Layout from "../Layouts/Default";
@@ -36,7 +36,7 @@ const Dashboard = ({ flash, user, isAdmin, remember }) => {
         labels: label_monhtly,
         datasets: [
             {
-                label: "Stock In",
+                label: "Customer",
                 data: data_monthly,
                 borderColor: "#0ea5e9",
                 borderWidth: 2,
@@ -44,7 +44,7 @@ const Dashboard = ({ flash, user, isAdmin, remember }) => {
                 // tension: 0.5,
             },
             {
-                label: "Stock Out",
+                label: "Follow Up",
                 data: data_monthly2,
                 borderColor: "#ef4444",
                 borderWidth: 2,
@@ -108,13 +108,13 @@ const Dashboard = ({ flash, user, isAdmin, remember }) => {
     return (
         <Layout flash={flash}>
             <Head>
-                <title>Dashboard | InventoryApp</title>
+                <title>Dashboard | AgentApp</title>
             </Head>
             <Sidebar />
             <section className="ml-80 p-8 relative">
                 <div className="mb-5">
                     <h1 className="text-3xl font-bold">Dashboard</h1>
-                    <p className="text-slate-500 dark:text-slate-400 text-lg">Inventory Statistics</p>
+                    <p className="text-slate-500 dark:text-slate-400 text-lg">Statistik Pelaporan</p>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-8 gap-5">
                     <motion.div
@@ -124,10 +124,10 @@ const Dashboard = ({ flash, user, isAdmin, remember }) => {
                         transition={{ delay: 0.1 }}
                     >
                         <div className="p-2 bg-sky-100 dark:bg-sky-500 dark:bg-opacity-20 text-sky-500 rounded-xl mr-2">
-                            <TbShoppingCart className="text-6xl" />
+                            <TbUser className="text-6xl" />
                         </div>
                         <div>
-                            <p className="text-slate-500 dark:text-slate-400 text-sm mb-1">Total Orders</p>
+                            <p className="text-slate-500 dark:text-slate-400 text-sm mb-1">Agent</p>
                             <p className="text-4xl font-bold">9</p>
                         </div>
                     </motion.div>
@@ -138,10 +138,10 @@ const Dashboard = ({ flash, user, isAdmin, remember }) => {
                         transition={{ delay: 0.2 }}
                     >
                         <div className="p-2 bg-sky-100 dark:bg-sky-500 dark:bg-opacity-20 text-sky-500 rounded-xl mr-2">
-                            <TbBox className="text-6xl" />
+                            <TbUsers className="text-6xl" />
                         </div>
                         <div>
-                            <p className="text-slate-500 dark:text-slate-400 text-sm mb-1">Total Product</p>
+                            <p className="text-slate-500 dark:text-slate-400 text-sm mb-1">Customer</p>
                             <p className="text-4xl font-bold">212</p>
                         </div>
                     </motion.div>
@@ -155,7 +155,7 @@ const Dashboard = ({ flash, user, isAdmin, remember }) => {
                             <TbBoxSeam className="text-6xl" />
                         </div>
                         <div>
-                            <p className="text-slate-500 dark:text-slate-400 text-sm mb-1">Total Stocks</p>
+                            <p className="text-slate-500 dark:text-slate-400 text-sm mb-1">Follow Up</p>
                             <p className="text-4xl font-bold">1341</p>
                         </div>
                     </motion.div>
@@ -169,7 +169,7 @@ const Dashboard = ({ flash, user, isAdmin, remember }) => {
                             <TbShoppingBag className="text-6xl" />
                         </div>
                         <div>
-                            <p className="text-slate-500 dark:text-slate-400 text-sm mb-1">Total Customers</p>
+                            <p className="text-slate-500 dark:text-slate-400 text-sm mb-1">Event</p>
                             <p className="text-4xl font-bold">32</p>
                         </div>
                     </motion.div>
@@ -179,7 +179,7 @@ const Dashboard = ({ flash, user, isAdmin, remember }) => {
                         whileInView={{ opacity: 1, y: 0 }}
                     >
                         <div className="flex justify-between mb-5">
-                            <p className="text-xl font-bold">Stocks Analystic</p>
+                            <p className="text-xl font-bold">Customer dan Follow Up Analystic</p>
                             <select>
                                 <option>Weekly</option>
                                 <option>Daily</option>
@@ -189,11 +189,11 @@ const Dashboard = ({ flash, user, isAdmin, remember }) => {
                             <div className="flex justify-center gap-5 mb-2">
                                 <div className="flex items-center gap-2">
                                     <div className="rounded-full w-4 h-4 bg-sky-500"></div>
-                                    <p className="font-bold text-sky-500">Stock In</p>
+                                    <p className="font-bold text-sky-500">Customer</p>
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <div className="rounded-full w-4 h-4 bg-red-500"></div>
-                                    <p className="font-bold text-red-500">Stock Out</p>
+                                    <p className="font-bold text-red-500">Follow Up</p>
                                 </div>
                             </div>
                             <Line data={dataStocksChart} options={stocksChartOptions} ref={lineChartRef} />
@@ -205,7 +205,7 @@ const Dashboard = ({ flash, user, isAdmin, remember }) => {
                         whileInView={{ opacity: 1, y: 0 }}
                     >
                         <div className="flex justify-between mb-5">
-                            <p className="text-xl font-bold">Orders Analystic</p>
+                            <p className="text-xl font-bold">Sales Analystic</p>
                         </div>
                         <div className="flex justify-center mb-5 flex-wrap">
                             <div>

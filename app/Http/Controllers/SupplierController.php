@@ -13,7 +13,7 @@ class SupplierController extends Controller
      */
     public function index()
     {
-        $suppliers = Supplier::orderBy('created_at', 'desc')->get();
+        $suppliers = Supplier::withCount('products')->orderBy('created_at', 'desc')->get();
         return Inertia::render('Supplier/Index', ['suppliers' => $suppliers]);
     }
 
@@ -128,7 +128,7 @@ class SupplierController extends Controller
             return redirect()->back()->with('error', 'Something Went Wrong☹️');
         }
 
-        return redirect()->back()->with('success', 'Supplier successfully deleted');
+        return redirect()->route('supplier.index')->with('success', 'Supplier successfully edited');
     }
 
     public function destroySelected(string $ids)

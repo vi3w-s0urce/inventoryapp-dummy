@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Customer;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\Supplier;
@@ -16,11 +17,11 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::with('supplier', 'product_category')->orderBy('created_at', 'desc')->get();
+        $products = Product::with(['supplier', 'product_category'])->orderBy('created_at', 'desc')->get();
         $filterSuppliers = Product::pluck('supplier_id')->unique();
         $filterSuppliers = Supplier::findMany($filterSuppliers);
         $filterCategories = Product::pluck('product_category_id')->unique();
-        $filterCategories = ProductCategory::findMany($filterCategories);
+        $filterCategories = Customer::findMany($filterCategories);
         return Inertia::render('Product/Index', ['products' => $products, 'filterSuppliers' => $filterSuppliers, 'filterCategories' => $filterCategories]);
     }
 
@@ -30,7 +31,7 @@ class ProductController extends Controller
     public function create()
     {
         $suppliers = Supplier::all();
-        $categories = ProductCategory::all();
+        $categories = Customer::all();
         return Inertia::render('Product/Create', ['suppliers' => $suppliers, 'categories' => $categories]);
     }
 
@@ -89,7 +90,7 @@ class ProductController extends Controller
     {
         $product = Product::where('id', $id)->with('supplier', 'product_category')->orderBy('created_at', 'desc')->first();
         $suppliers = Supplier::all();
-        $categories = ProductCategory::all();
+        $categories = Customer::all();
 
         if (!$product) {
             return redirect()->back()->with('error', 'Invalid Request! Item not found');

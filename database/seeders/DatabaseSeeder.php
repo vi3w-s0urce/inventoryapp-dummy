@@ -23,10 +23,10 @@ class DatabaseSeeder extends Seeder
         $faker = Factory::create();
 
         User::create([
-            'name' => 'Visitor',
-            'email' => 'visitor@example.com',
+            'name' => 'Akun Contoh',
+            'email' => 'contoh@gmail.com',
             'roles' => 'admin',
-            'password' => 'visitor',
+            'password' => 'password',
         ]);
 
         // ProductCategory::create([
@@ -39,7 +39,7 @@ class DatabaseSeeder extends Seeder
 
         // ]);
 
-        for ($i=0; $i < 200; $i++) { 
+        for ($i=0; $i < 200; $i++) {
             // Product Category
             // ProductCategory::create([
             //     'name' => $faker->unique()->word,

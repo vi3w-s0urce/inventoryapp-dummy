@@ -53,9 +53,9 @@ const OrderCreate = ({ flash, products, filterSuppliers, filterCategories, custo
     const handleAddCart = (itemId, itemPrice, itemName) => {
         setCartData([...cartData, { product_id: itemId, product_name: itemName, product_price: itemPrice, qty: null, total_price: 0 }]);
     };
-    
+
     const tableData = { nodes: productsData.filter((item) => cartData.map((cartItem) => cartItem.product_id).includes(item.id)) };
-    
+
     const onSelectChange = (action, state) => {
         setSelectedItem(state.ids);
     };
@@ -63,11 +63,11 @@ const OrderCreate = ({ flash, products, filterSuppliers, filterCategories, custo
     useEffect(() => {
         const totalQty = cartData.reduce((accumulator, currentValue) => accumulator + currentValue.qty, 0);
         const alltotal_price = cartData.reduce((accumulator, currentValue) => accumulator + currentValue.total_price, 0);
-        
+
         settotal_product(cartData.length);
         settotal_stock(!isNaN(totalQty) ? totalQty : 0);
         settotal_price(alltotal_price);
-        
+
     }, [cartData, cartData.length])
 
     useEffect(() => {
@@ -79,7 +79,7 @@ const OrderCreate = ({ flash, products, filterSuppliers, filterCategories, custo
             cartData: cartData,
         });
     }, [total_product, total_price, total_stock, cartData])
-    
+
     const select = useRowSelect(tableData, {
         onChange: onSelectChange,
     });
@@ -149,7 +149,7 @@ const OrderCreate = ({ flash, products, filterSuppliers, filterCategories, custo
     return (
         <Layout flash={flash}>
             <Head>
-                <title>Create Order | InventoryApp</title>
+                <title>Create Order | AgentApp</title>
             </Head>
             <Sidebar />
             <AnimatePresence>
@@ -163,7 +163,7 @@ const OrderCreate = ({ flash, products, filterSuppliers, filterCategories, custo
                         cartData={cartData}
                     />
                 ) : modalConfirm ? (
-                    <ModalConfirm 
+                    <ModalConfirm
                         closeModal={() => setModalConfirm(false)}
                         title={"Confirm Order"}
                         description={"If an order has been made, the product stock will decrease unless the order status is set to cancelled."}
@@ -192,7 +192,7 @@ const OrderCreate = ({ flash, products, filterSuppliers, filterCategories, custo
                                 <div className="col-span-8">
                                     <div className="flex justify-between w-full items-center">
                                         <p>
-                                            Product Cart<span className="text-sm text-red-500 font-bold"> *</span>
+                                            Sales Cart<span className="text-sm text-red-500 font-bold"> *</span>
                                         </p>
                                         <div className="flex items-center gap-3">
                                             {selectedItem.length > 0 && (
@@ -235,7 +235,7 @@ const OrderCreate = ({ flash, products, filterSuppliers, filterCategories, custo
                                                                 className="!py-2 !px-3 border-y-2 border-slate-200 dark:border-slate-600 hover:text-sky-500 transition-all"
                                                                 sortKey="NAME"
                                                             >
-                                                                Product
+                                                                Sales
                                                             </HeaderCellSort>
                                                             <HeaderCellSort className="!py-2 !px-3 border-y-2 dark:border-slate-600" sortKey="PRICE">
                                                                 Price
@@ -354,7 +354,7 @@ const OrderCreate = ({ flash, products, filterSuppliers, filterCategories, custo
                                 </div>
                                 <div className="col-span-4 flex flex-col gap-3">
                                     <div className="flex gap-3">
-                                        <TextInput 
+                                        <TextInput
                                             label="Order Name"
                                             type="text"
                                             name="order_name"
@@ -378,7 +378,7 @@ const OrderCreate = ({ flash, products, filterSuppliers, filterCategories, custo
                                     <div className="w-full border-2 py-3 px-5 rounded-xl mt-5">
                                         <p className="text-xl font-bold mb-2">Order Details</p>
                                         <div className="w-full flex justify-between text-lg">
-                                            <p>Total Product</p>
+                                            <p>Total Sales</p>
                                             <span>{total_product}</span>
                                         </div>
                                         <div className="w-full flex justify-between text-lg">

@@ -21,7 +21,7 @@ return new class extends Migration
             $table->unsignedBigInteger('product_category_id')->nullable();
             $table->unsignedBigInteger('supplier_id');
             $table->foreign('supplier_id')->references('id')->on('suppliers');
-            $table->foreign('product_category_id')->references('id')->on('product_categories')->onDelete('set null');
+            $table->foreign('product_category_id')->references('id')->on('customers')->onDelete('set null');
             $table->timestamps();
         });
     }

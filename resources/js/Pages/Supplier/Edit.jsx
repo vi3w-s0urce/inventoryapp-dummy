@@ -37,17 +37,17 @@ const CustomerEdit = ({ flash, supplier }) => {
     return (
         <Layout flash={flash}>
             <Head>
-                <title>Create Supplier | InventoryApp</title>
+                <title>Create Agent | AgentApp</title>
             </Head>
             <Sidebar />
             <section className="ml-80 p-8 relative">
                 <div className="mb-5">
-                    <h1 className="text-3xl font-bold">Supplier</h1>
-                    <p className="text-slate-500 dark:text-slate-400 text-lg">Edit Current Supplier</p>
+                    <h1 className="text-3xl font-bold">Agent</h1>
+                    <p className="text-slate-500 dark:text-slate-400 text-lg">Edit Current Agent</p>
                 </div>
                 <div className="bg-white dark:bg-slate-800 shadow-lg p-5 rounded-xl">
                     <div className="flex justify-between items-center mb-3">
-                        <p className="text-xl font-bold">Edit Supplier</p>
+                        <p className="text-xl font-bold">Edit Agent</p>
                         <Link
                             href={route("supplier.index")}
                             className="flex items-center gap-2 bg-slate-200 hover:bg-slate-300 dark:bg-slate-700 text-slate-500 dark:text-slate-400 px-3 py-2 rounded-lg font-bold transition-all"
@@ -61,7 +61,7 @@ const CustomerEdit = ({ flash, supplier }) => {
                                 type="text"
                                 name="name"
                                 label="Name"
-                                placeholder="Enter Supplier Name"
+                                placeholder="Enter Agent Name"
                                 required={true}
                                 onChange={setData}
                                 value={data.name}
@@ -72,7 +72,7 @@ const CustomerEdit = ({ flash, supplier }) => {
                                     type="email"
                                     name="email"
                                     label="Email"
-                                    placeholder="Enter Supplier Email"
+                                    placeholder="Enter Agent Email"
                                     required={true}
                                     onChange={setData}
                                     value={data.email}
@@ -92,7 +92,7 @@ const CustomerEdit = ({ flash, supplier }) => {
                             <TextAreaInput
                                 name="address"
                                 label="Address"
-                                placeholder="Enter Supplier Address"
+                                placeholder="Enter Agent Address"
                                 required={true}
                                 onChange={setData}
                                 value={data.address}
@@ -110,7 +110,7 @@ const CustomerEdit = ({ flash, supplier }) => {
                                     type="submit"
                                     className="bg-sky-500 hover:bg-sky-600 text-white dark:text-slate-800 px-5 py-2 rounded-lg font-bold transition-all"
                                 >
-                                    Edit Supplier
+                                    Edit Agent
                                 </button>
                             </div>
                         </form>

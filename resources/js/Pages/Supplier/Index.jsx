@@ -23,7 +23,7 @@ import classNames from "classnames";
 import NoData from "./../../../assets/image/NoData.svg";
 import { Inertia } from "@inertiajs/inertia";
 
-const Supplier = ({ flash, suppliers }) => {
+const Agent = ({ flash, suppliers }) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -88,7 +88,7 @@ const Supplier = ({ flash, suppliers }) => {
     return (
         <Layout flash={flash}>
             <Head>
-                <title>Supplier | InventoryApp</title>
+                <title>Agent | AgentApp</title>
             </Head>
             <Sidebar />
             <AnimatePresence>
@@ -112,8 +112,8 @@ const Supplier = ({ flash, suppliers }) => {
             </AnimatePresence>
             <section className="ml-80 p-8 relative">
                 <div className="mb-5">
-                    <h1 className="text-3xl font-bold">Supplier</h1>
-                    <p className="text-slate-500 dark:text-slate-400 text-lg">List of All The Supplier</p>
+                    <h1 className="text-3xl font-bold">Agent</h1>
+                    <p className="text-slate-500 dark:text-slate-400 text-lg">List of All The Agent</p>
                 </div>
                 <div className="bg-white dark:bg-slate-800 shadow-lg p-5 rounded-xl">
                     <div className="flex justify-between items-center">
@@ -155,7 +155,7 @@ const Supplier = ({ flash, suppliers }) => {
                                     name="search"
                                     id="search_category"
                                     className="w-full py-2 outline-none rounded-lg dark:bg-slate-800 transition-all"
-                                    placeholder="Search by Supplier Name"
+                                    placeholder="Search by Agent Name"
                                     onChange={handleSearch}
                                 />
                             </label>
@@ -163,7 +163,7 @@ const Supplier = ({ flash, suppliers }) => {
                                 href={route("supplier.create")}
                                 className="flex items-center gap-2 bg-emerald-400 dark:bg-emerald-500 text-white dark:text-slate-800 hover:bg-emerald-500 dark:hover:bg-emerald-600 px-3 py-2 rounded-lg font-bold whitespace-nowrap transition-all"
                             >
-                                <TbPlus className="font-bold text-xl" /> Add Supplier
+                                <TbPlus className="font-bold text-xl" /> Add Agent
                             </Link>
                         </div>
                     </div>
@@ -196,11 +196,11 @@ const Supplier = ({ flash, suppliers }) => {
                                                 className="!py-2 !px-3 border-y-2 border-slate-200 dark:border-slate-600 hover:text-sky-500 transition-all"
                                                 sortKey="CATEGORYNAME"
                                             >
-                                                Supplier
+                                                Agent
                                             </HeaderCellSort>
                                             <HeaderCell className="!py-2 !px-3 border-y-2 dark:border-slate-600">Address</HeaderCell>
                                             <HeaderCell className="!py-2 !px-3 border-y-2 dark:border-slate-600">Contact</HeaderCell>
-                                            <HeaderCell className="!py-2 !px-3 border-y-2 dark:border-slate-600">Total Product</HeaderCell>
+                                            <HeaderCell className="!py-2 !px-3 border-y-2 dark:border-slate-600">Total Sales</HeaderCell>
                                             <HeaderCell className="!py-2 !px-3 rounded-r-xl border-y-2 border-r-2 border-slate-200 dark:border-slate-600">
                                                 Action
                                             </HeaderCell>
@@ -258,7 +258,7 @@ const Supplier = ({ flash, suppliers }) => {
                                                             whileInView={{ opacity: 1, y: 0 }}
                                                             transition={{ delay: 0.05 }}
                                                         >
-                                                            0
+                                                            {item.products_count}
                                                         </motion.div>
                                                     </Cell>
                                                     <Cell className="!p-3 rounded-r-xl">
@@ -337,4 +337,4 @@ const Supplier = ({ flash, suppliers }) => {
     );
 };
 
-export default Supplier;
+export default Agent;

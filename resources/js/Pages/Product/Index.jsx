@@ -24,7 +24,7 @@ import NoData from "./../../../assets/image/NoData.svg";
 import { Inertia } from "@inertiajs/inertia";
 import SelectInput from "../../Components/input/SelectInput";
 
-const Product = ({ flash, products, filterSuppliers, filterCategories }) => {
+const Sales = ({ flash, products, filterSuppliers, filterCategories }) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -60,23 +60,7 @@ const Product = ({ flash, products, filterSuppliers, filterCategories }) => {
     const categoriesFormatSelect = ({ label, value, color }) => (
         <div className="w-full flex items-center justify-center">
             <div
-                className={`w-fit px-3 font-bold rounded-lg ${
-                    color == "Red"
-                        ? "!bg-red-200 text-red-500 dark:!bg-opacity-20 dark:!bg-red-500"
-                        : color == "Green"
-                        ? "!bg-green-200 text-green-500 dark:!bg-opacity-20 dark:!bg-green-500"
-                        : color == "Blue"
-                        ? "!bg-blue-200 text-blue-500 dark:!bg-opacity-20 dark:!bg-blue-500"
-                        : color == "Yellow"
-                        ? "!bg-yellow-200 text-yellow-500 dark:!bg-opacity-20 dark:!bg-yellow-500"
-                        : color == "Purple"
-                        ? "!bg-purple-200 text-purple-500 dark:!bg-opacity-20 dark:!bg-purple-500"
-                        : color == "Cyan"
-                        ? "!bg-cyan-200 text-cyan-500 dark:!bg-opacity-20 dark:!bg-cyan-500"
-                        : color == "grey"
-                        ? "!bg-slate-200 text-slate-500 dark:!bg-opacity-20 dark:!bg-slate-500"
-                        : null
-                }`}
+                className={`w-fit px-3 font-bold rounded-lg`}
             >
                 {label}
             </div>
@@ -147,7 +131,7 @@ const Product = ({ flash, products, filterSuppliers, filterCategories }) => {
     return (
         <Layout flash={flash}>
             <Head>
-                <title>Product | InventoryApp</title>
+                <title>Sales | AgentApp</title>
             </Head>
             <Sidebar />
             <AnimatePresence>
@@ -171,13 +155,13 @@ const Product = ({ flash, products, filterSuppliers, filterCategories }) => {
             </AnimatePresence>
             <section className="ml-80 p-8 relative">
                 <div className="mb-5">
-                    <h1 className="text-3xl font-bold">Product</h1>
-                    <p className="text-slate-500 dark:text-slate-400 text-lg">List of All The Product</p>
+                    <h1 className="text-3xl font-bold">Sales</h1>
+                    <p className="text-slate-500 dark:text-slate-400 text-lg">List of All The Sales</p>
                 </div>
                 <div className="bg-white dark:bg-slate-800 shadow-lg p-5 rounded-xl">
                     <div className="flex justify-between items-center">
                         <p className="text-xl font-bold">
-                            Products
+                            Sales
                             <span className="bg-slate-200 text-slate-500 dark:bg-slate-700 dark:text-slate-400 p-2 rounded-lg text-lg ml-1">
                                 {productData.length}
                             </span>
@@ -215,7 +199,7 @@ const Product = ({ flash, products, filterSuppliers, filterCategories }) => {
                                     name="search"
                                     id="search_category"
                                     className="w-full py-2 outline-none rounded-lg dark:bg-slate-800 transition-all"
-                                    placeholder="Search by Product Name"
+                                    placeholder="Search by Sales Name"
                                     onChange={handleSearch}
                                 />
                             </label>
@@ -247,8 +231,8 @@ const Product = ({ flash, products, filterSuppliers, filterCategories }) => {
                                             <div className="flex flex-col gap-2 mb-3">
                                                 <SelectInput
                                                     name="supplier_id"
-                                                    label="Supplier"
-                                                    placeholder="Select Supplier"
+                                                    label="Agent"
+                                                    placeholder="Select Agent"
                                                     options={supplierFilterOptions}
                                                     value={supplierFilter.value}
                                                     type="filter"
@@ -256,8 +240,8 @@ const Product = ({ flash, products, filterSuppliers, filterCategories }) => {
                                                 />
                                                 <SelectInput
                                                     name="product_category_id"
-                                                    label="Category"
-                                                    placeholder="Select Supplier"
+                                                    label="Customer"
+                                                    placeholder="Select Agent"
                                                     options={categoriesFilterOptions}
                                                     formatOptionLabel={categoriesFormatSelect}
                                                     value={categoryFilter.value}
@@ -273,7 +257,7 @@ const Product = ({ flash, products, filterSuppliers, filterCategories }) => {
                                 href={route("product.create")}
                                 className="flex items-center gap-2 bg-emerald-400 dark:bg-emerald-500 text-white dark:text-slate-800 hover:bg-emerald-500 dark:hover:bg-emerald-600 px-3 py-2 rounded-lg font-bold whitespace-nowrap transition-all"
                             >
-                                <TbPlus className="font-bold text-xl" /> Add Product
+                                <TbPlus className="font-bold text-xl" /> Add Sales
                             </Link>
                         </div>
                     </div>
@@ -306,7 +290,7 @@ const Product = ({ flash, products, filterSuppliers, filterCategories }) => {
                                                 className="!py-2 !px-3 border-y-2 border-slate-200 dark:border-slate-600 hover:text-sky-500 transition-all"
                                                 sortKey="NAME"
                                             >
-                                                Product
+                                                Sales
                                             </HeaderCellSort>
                                             <HeaderCellSort className="!py-2 !px-3 border-y-2 dark:border-slate-600" sortKey="PRICE">
                                                 Price
@@ -314,8 +298,8 @@ const Product = ({ flash, products, filterSuppliers, filterCategories }) => {
                                             <HeaderCellSort className="!py-2 !px-3 border-y-2 dark:border-slate-600" sortKey="STOCK">
                                                 Stock
                                             </HeaderCellSort>
-                                            <HeaderCell className="!py-2 !px-3 border-y-2 dark:border-slate-600">Category</HeaderCell>
-                                            <HeaderCell className="!py-2 !px-3 border-y-2 dark:border-slate-600">Supplier</HeaderCell>
+                                            <HeaderCell className="!py-2 !px-3 border-y-2 dark:border-slate-600">Customer</HeaderCell>
+                                            <HeaderCell className="!py-2 !px-3 border-y-2 dark:border-slate-600">Agent</HeaderCell>
                                             <HeaderCell className="!py-2 !px-3 rounded-r-xl border-y-2 border-r-2 border-slate-200 dark:border-slate-600">
                                                 Action
                                             </HeaderCell>
@@ -375,21 +359,7 @@ const Product = ({ flash, products, filterSuppliers, filterCategories }) => {
                                                                 initial={{ opacity: 0, y: 10 }}
                                                                 whileInView={{ opacity: 1, y: 0 }}
                                                                 transition={{ delay: 0.05 }}
-                                                                className={`w-fit px-3 font-bold rounded-lg ${
-                                                                    item.product_category.color == "Red"
-                                                                        ? "bg-red-200 text-red-500 dark:bg-opacity-20 dark:bg-red-500"
-                                                                        : item.product_category.color == "Green"
-                                                                        ? "bg-green-200 text-green-500 dark:bg-opacity-20 dark:bg-green-500"
-                                                                        : item.product_category.color == "Blue"
-                                                                        ? "bg-blue-200 text-blue-500 dark:bg-opacity-20 dark:bg-blue-500"
-                                                                        : item.product_category.color == "Yellow"
-                                                                        ? "bg-yellow-200 text-yellow-500 dark:bg-opacity-20 dark:bg-yellow-500"
-                                                                        : item.product_category.color == "Purple"
-                                                                        ? "bg-purple-200 text-purple-500 dark:bg-opacity-20 dark:bg-purple-500"
-                                                                        : item.product_category.color == "Cyan"
-                                                                        ? "bg-cyan-200 text-cyan-500 dark:bg-opacity-20 dark:bg-cyan-500"
-                                                                        : null
-                                                                }`}
+                                                                className={`w-fit px-3 font-bold rounded-lg`}
                                                             >
                                                                 {item.product_category.name}
                                                             </motion.div>
@@ -489,4 +459,4 @@ const Product = ({ flash, products, filterSuppliers, filterCategories }) => {
     );
 };
 
-export default Product;
+export default Sales;

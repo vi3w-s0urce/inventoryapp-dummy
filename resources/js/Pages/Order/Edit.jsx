@@ -87,17 +87,17 @@ const ProductEdit = ({ flash, product, suppliers, categories,  }) => {
     return (
         <Layout flash={flash}>
             <Head>
-                <title>Edit Product | InventoryApp</title>
+                <title>Edit Sales | AgentApp</title>
             </Head>
             <Sidebar />
             <section className="ml-80 p-8 relative">
                 <div className="mb-5">
-                    <h1 className="text-3xl font-bold">Product</h1>
-                    <p className="text-slate-500 dark:text-slate-400 text-lg">Edit Current Product</p>
+                    <h1 className="text-3xl font-bold">Sales</h1>
+                    <p className="text-slate-500 dark:text-slate-400 text-lg">Edit Current Sales</p>
                 </div>
                 <div className="bg-white dark:bg-slate-800 shadow-lg p-5 rounded-xl">
                     <div className="flex justify-between items-center mb-3">
-                        <p className="text-xl font-bold">Edit Product</p>
+                        <p className="text-xl font-bold">Edit Sales</p>
                         <Link
                             href={route("product.index")}
                             className="flex items-center gap-2 bg-slate-200 hover:bg-slate-300 dark:bg-slate-700 text-slate-500 dark:text-slate-400 px-3 py-2 rounded-lg font-bold transition-all"
@@ -112,8 +112,8 @@ const ProductEdit = ({ flash, product, suppliers, categories,  }) => {
                                     <TextInput
                                         type="text"
                                         name="name"
-                                        label="Product Name"
-                                        placeholder="Enter Product Name"
+                                        label="Sales Name"
+                                        placeholder="Enter Sales Name"
                                         required={true}
                                         onChange={setData}
                                         value={data.name}
@@ -124,7 +124,7 @@ const ProductEdit = ({ flash, product, suppliers, categories,  }) => {
                                             type="currency"
                                             name="price"
                                             label="Price"
-                                            placeholder="Enter Price of Product (Rp)"
+                                            placeholder="Enter Price of Sales (Rp)"
                                             value={data.price}
                                             onChange={setData}
                                             required={true}
@@ -133,7 +133,7 @@ const ProductEdit = ({ flash, product, suppliers, categories,  }) => {
                                         <NumberInput
                                             type="number"
                                             name="stock"
-                                            placeholder="Enter Number of Product Stock"
+                                            placeholder="Enter Number of Sales Stock"
                                             label="Stock"
                                             arrow={false}
                                             value={data.stock}
@@ -145,8 +145,8 @@ const ProductEdit = ({ flash, product, suppliers, categories,  }) => {
                                     <div className="flex w-full gap-3">
                                         <SelectInput
                                             name="supplier_id"
-                                            label="Supplier"
-                                            placeholder="Select Supplier"
+                                            label="Agent"
+                                            placeholder="Select Agent"
                                             options={supplierOptions}
                                             value={data.supplier_id}
                                             onChange={setData}
@@ -155,8 +155,8 @@ const ProductEdit = ({ flash, product, suppliers, categories,  }) => {
                                         />
                                         <SelectInput
                                             name="product_category_id"
-                                            label="Category"
-                                            placeholder="Select Category"
+                                            label="Customer"
+                                            placeholder="Select Customer"
                                             options={categoriesOptions}
                                             formatOptionLabel={categoriesFormatSelect}
                                             value={data.product_category_id}
@@ -167,7 +167,7 @@ const ProductEdit = ({ flash, product, suppliers, categories,  }) => {
                                     <TextAreaInput
                                         name="description"
                                         label="Description"
-                                        placeholder="Enter Category Description"
+                                        placeholder="Enter Customer Description"
                                         onChange={setData}
                                         required={true}
                                         value={data.description}
@@ -199,7 +199,7 @@ const ProductEdit = ({ flash, product, suppliers, categories,  }) => {
                                     type="submit"
                                     className="bg-sky-500 hover:bg-sky-600 text-white dark:text-slate-800 px-5 py-2 rounded-lg font-bold transition-all"
                                 >
-                                    Edit Product
+                                    Edit Sales
                                 </button>
                             </div>
                         </form>

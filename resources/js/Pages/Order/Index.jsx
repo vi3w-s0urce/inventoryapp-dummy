@@ -129,7 +129,7 @@ const Order = ({ flash, orders }) => {
     return (
         <Layout flash={flash}>
             <Head>
-                <title>Order | InventoryApp</title>
+                <title>Order | AgentApp</title>
             </Head>
             <Sidebar />
             <AnimatePresence>
@@ -196,7 +196,7 @@ const Order = ({ flash, orders }) => {
                                     name="search"
                                     id="search_category"
                                     className="w-full py-2 outline-none rounded-lg dark:bg-slate-800 transition-all"
-                                    placeholder="Search by Product Name"
+                                    placeholder="Search by Sales Name"
                                     onChange={handleSearch}
                                 />
                             </label>
@@ -228,8 +228,8 @@ const Order = ({ flash, orders }) => {
                                             <div className="flex flex-col gap-2 mb-3">
                                                 <SelectInput
                                                     name="supplier_id"
-                                                    label="Supplier"
-                                                    placeholder="Select Supplier"
+                                                    label="Agent"
+                                                    placeholder="Select Agent"
                                                     options={supplierFilterOptions}
                                                     value={supplierFilter.value}
                                                     type="filter"
@@ -237,8 +237,8 @@ const Order = ({ flash, orders }) => {
                                                 />
                                                 <SelectInput
                                                     name="product_category_id"
-                                                    label="Category"
-                                                    placeholder="Select Supplier"
+                                                    label="Customer"
+                                                    placeholder="Select Agent"
                                                     options={categoriesFilterOptions}
                                                     formatOptionLabel={categoriesFormatSelect}
                                                     value={categoryFilter.value}
@@ -285,7 +285,7 @@ const Order = ({ flash, orders }) => {
                                                 Customer
                                             </HeaderCellSort>
                                             <HeaderCellSort className="!py-2 !px-3 border-y-2 dark:border-slate-600" sortKey="STOCK">
-                                                Total Product
+                                                Total Sales
                                             </HeaderCellSort>
                                             <HeaderCell className="!py-2 !px-3 border-y-2 dark:border-slate-600">Total Stock</HeaderCell>
                                             <HeaderCell className="!py-2 !px-3 border-y-2 dark:border-slate-600">Total Price</HeaderCell>

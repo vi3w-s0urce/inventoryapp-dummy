@@ -133,17 +133,17 @@ const ProductCategoryEdit = ({ flash, products, category, selectedProducts }) =>
     return (
         <Layout flash={flash}>
             <Head>
-                <title>Edit Category | InventoryApp</title>
+                <title>Edit Customer | AgentApp</title>
             </Head>
             <Sidebar />
             <section className="ml-80 p-8 relative">
                 <div className="mb-5">
-                    <h1 className="text-3xl font-bold">Product Category</h1>
-                    <p className="text-slate-500 text-lg">Edit Current Category</p>
+                    <h1 className="text-3xl font-bold">Sales Customer</h1>
+                    <p className="text-slate-500 text-lg">Edit Current Customer</p>
                 </div>
                 <div className="bg-white dark:bg-slate-800 shadow-lg p-5 rounded-xl">
                     <div className="flex justify-between items-center mb-3">
-                        <p className="text-xl font-bold">Edit Product Category</p>
+                        <p className="text-xl font-bold">Edit Sales Customer</p>
                         <Link
                             href={route("category.index")}
                             className="flex items-center gap-2 bg-slate-200 hover:bg-slate-300 dark:bg-slate-700 text-slate-500 dark:text-slate-400 px-3 py-2 rounded-lg font-bold"
@@ -160,7 +160,7 @@ const ProductCategoryEdit = ({ flash, products, category, selectedProducts }) =>
                                             type="text"
                                             name="name"
                                             label="Name"
-                                            placeholder="Enter Category Name"
+                                            placeholder="Enter Customer Name"
                                             required={true}
                                             onChange={setData}
                                             value={data.name}
@@ -169,7 +169,7 @@ const ProductCategoryEdit = ({ flash, products, category, selectedProducts }) =>
                                         <SelectInput
                                             name="color"
                                             label="Color"
-                                            placeholder="Select Category Color"
+                                            placeholder="Select Customer Color"
                                             options={categoryColorOptions}
                                             formatOptionLabel={categoryColorFormatSelect}
                                             value={data.color}
@@ -181,7 +181,7 @@ const ProductCategoryEdit = ({ flash, products, category, selectedProducts }) =>
                                     <TextAreaInput
                                         name="description"
                                         label="Description"
-                                        placeholder="Enter Category Description"
+                                        placeholder="Enter Customer Description"
                                         required={true}
                                         onChange={setData}
                                         value={data.description}
@@ -189,7 +189,7 @@ const ProductCategoryEdit = ({ flash, products, category, selectedProducts }) =>
                                     />
                                 </div>
                                 <div className="w-full">
-                                    <p>Product</p>
+                                    <p>Sales</p>
                                     <div className="max-h-96 relative">
                                         <Table
                                             data={tableData}
@@ -218,11 +218,11 @@ const ProductCategoryEdit = ({ flash, products, category, selectedProducts }) =>
                                                                 className="!py-2 !px-3 border-y-2 border-slate-200 dark:border-slate-600 hover:text-sky-500 transition-all"
                                                                 sortKey="NAME"
                                                             >
-                                                                Product
+                                                                Sales
                                                             </HeaderCellSort>
-                                                            <HeaderCell className="!py-2 !px-3 border-y-2 dark:border-slate-600">Category</HeaderCell>
+                                                            <HeaderCell className="!py-2 !px-3 border-y-2 dark:border-slate-600">Customer</HeaderCell>
                                                             <HeaderCell className="!py-2 !px-3 rounded-r-xl border-y-2 border-r-2 border-slate-200 dark:border-slate-600">
-                                                                Supplier
+                                                                Agent
                                                             </HeaderCell>
                                                         </HeaderRow>
                                                     </Header>
@@ -333,7 +333,7 @@ const ProductCategoryEdit = ({ flash, products, category, selectedProducts }) =>
                                     type="submit"
                                     className="bg-sky-500 hover:bg-sky-600 text-white dark:text-slate-800 px-5 py-2 rounded-lg font-bold"
                                 >
-                                    Edit Category
+                                    Edit Customer
                                 </button>
                             </div>
                         </form>

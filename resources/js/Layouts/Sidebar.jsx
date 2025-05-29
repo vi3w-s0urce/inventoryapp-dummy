@@ -17,6 +17,8 @@ import {
     TbCircleFilled,
     TbMinus,
     TbSunMoon,
+    TbUsers,
+    TbBuildingEstate,
 } from "react-icons/tb";
 import { RxDotFilled } from "react-icons/rx";
 import Logo from "../../assets/image/Logo.svg";
@@ -56,7 +58,7 @@ const Sidebar = () => {
                     <div className="flex items-center">
                         <motion.img src={Logo} className="w-6 mr-2" initial={{ scale: 0 }} animate={{ scale: 1 }} />
                         <motion.p className="text-xl font-bold" initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }}>
-                            <span className="text-sky-500">Inventory</span>App
+                            <span className="text-sky-500">Agent</span>App
                         </motion.p>
                     </div>
                     <motion.div whileHover={{ x: -5 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
@@ -80,7 +82,7 @@ const Sidebar = () => {
                             <p className="font-bold text-lg">Dashboard</p>
                         </motion.div>
                     </Link>
-                    <Link href={route("order.index")}>
+                    {/* <Link href={route("order.index")}>
                         <motion.div
                             className={`flex items-center p-2 m-1 rounded-lg cursor-pointer transition-all ${
                                 currentRoute.route == "order"
@@ -107,7 +109,7 @@ const Sidebar = () => {
                     >
                         <TbReport className="text-2xl mr-3" />
                         <p className="font-bold text-lg">Report</p>
-                    </motion.div>
+                    </motion.div> */}
                 </div>
                 <div className="px-3 mb-5">
                     <p className="text-slate-400 dark:text-slate-500 font-bold text-md mb-2 ml-2 text-sm">MANAGEMENT</p>
@@ -122,8 +124,8 @@ const Sidebar = () => {
                                 isSubProductOpen ? setIsSubProductOpen(false) : setIsSubProductOpen(true);
                             }}
                         >
-                            <TbCube className="text-2xl mr-3" />
-                            <p className="font-bold text-lg">Product</p>
+                            <TbBuildingEstate className="text-2xl mr-3" />
+                            <p className="font-bold text-lg">Property</p>
                             {isSubProductOpen || currentRoute.subRoute ? (
                                 <TbMinus className="text-xl ml-auto mr-2" />
                             ) : (
@@ -138,15 +140,15 @@ const Sidebar = () => {
                                     animate={{ height: "inherit" }}
                                     exit={{ height: 0 }}
                                 >
-                                    <Link
+                                    {/* <Link
                                         href={route("category.index")}
                                         className={`flex items-center p-2 cursor-pointer rounded-lg ml-8 transition-all ${
                                             currentRoute.subRoute == "category" ? "text-sky-500" : "hover:bg-slate-200 dark:hover:bg-slate-700"
                                         }`}
                                     >
                                         <RxDotFilled className="text-2xl mr-2" />
-                                        <p className="font-bold text-lg">Category</p>
-                                    </Link>
+                                        <p className="font-bold text-lg">Customer</p>
+                                    </Link> */}
                                     <Link
                                         href={route("product.index")}
                                         className={`flex items-center p-2 cursor-pointer rounded-lg ml-8 transition-all ${
@@ -154,7 +156,7 @@ const Sidebar = () => {
                                         }`}
                                     >
                                         <RxDotFilled className="text-2xl mr-2" />
-                                        <p className="font-bold text-lg">Product Master</p>
+                                        <p className="font-bold text-lg">Sales</p>
                                     </Link>
                                 </motion.div>
                             ) : null}
@@ -171,8 +173,8 @@ const Sidebar = () => {
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: 0.5 }}
                         >
-                            <TbAlbum className="text-2xl mr-3" />
-                            <p className="font-bold text-lg">Supplier</p>
+                            <TbUser className="text-2xl mr-3" />
+                            <p className="font-bold text-lg">Agent</p>
                         </motion.div>
                     </Link>
                     <Link href={route("customer.index")}>
@@ -186,11 +188,11 @@ const Sidebar = () => {
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: 0.6 }}
                         >
-                            <TbShoppingBag className="text-2xl mr-3" />
+                            <TbUsers className="text-2xl mr-3" />
                             <p className="font-bold text-lg">Customer</p>
                         </motion.div>
                     </Link>
-                    {auth.isAdmin && (
+                    {/* {auth.isAdmin && (
                         <motion.div
                             className={`flex items-center p-2 m-1 rounded-lg cursor-pointer transition-all ${
                                 currentRoute.route == "user"
@@ -204,7 +206,7 @@ const Sidebar = () => {
                             <TbUserCircle className="text-2xl mr-3" />
                             <p className="font-bold text-lg">User</p>
                         </motion.div>
-                    )}
+                    )} */}
                 </div>
             </div>
             <div>

@@ -84,7 +84,7 @@ const ProductCategory = ({ flash, categories }) => {
     return (
         <Layout flash={flash}>
             <Head>
-                <title>Product Category | InventoryApp</title>
+                <title>Sales Customer | AgentApp</title>
             </Head>
             <Sidebar />
             <AnimatePresence>
@@ -108,8 +108,8 @@ const ProductCategory = ({ flash, categories }) => {
             </AnimatePresence>
             <section className="ml-80 p-8 relative">
                 <div className="mb-5">
-                    <h1 className="text-3xl font-bold">Product Category</h1>
-                    <p className="text-slate-500 dark:text-slate-400 text-lg">List of Product Categories</p>
+                    <h1 className="text-3xl font-bold">Sales Customer</h1>
+                    <p className="text-slate-500 dark:text-slate-400 text-lg">List of Sales Categories</p>
                 </div>
                 <div className="bg-white dark:bg-slate-800 shadow-lg p-5 rounded-xl">
                     <div className="flex justify-between items-center">
@@ -150,7 +150,7 @@ const ProductCategory = ({ flash, categories }) => {
                                     name="search"
                                     id="search_category"
                                     className="w-full py-2 outline-none rounded-lg dark:bg-slate-800 transition-all"
-                                    placeholder="Search by Category Name"
+                                    placeholder="Search by Customer Name"
                                     onChange={handleSearch}
                                 />
                             </label>
@@ -158,7 +158,7 @@ const ProductCategory = ({ flash, categories }) => {
                                 href={route("category.create")}
                                 className="flex items-center gap-2 bg-emerald-400 dark:bg-emerald-500 text-white dark:text-slate-800 hover:bg-emerald-500 dark:hover:bg-emerald-400 px-3 py-2 rounded-lg font-bold whitespace-nowrap transition-all"
                             >
-                                <TbPlus className="font-bold text-xl" /> Add Category
+                                <TbPlus className="font-bold text-xl" /> Add Customer
                             </Link>
                         </div>
                     </div>
@@ -191,10 +191,10 @@ const ProductCategory = ({ flash, categories }) => {
                                                 className="!py-2 !px-3 border-y-2 border-slate-200 dark:border-slate-600 hover:text-sky-500 transition-all"
                                                 sortKey="CATEGORYNAME"
                                             >
-                                                Category Name
+                                                Customer Name
                                             </HeaderCellSort>
                                             <HeaderCell className="!py-2 !px-3 border-y-2 dark:border-slate-600">Description</HeaderCell>
-                                            <HeaderCell className="!py-2 !px-3 border-y-2 dark:border-slate-600">Total Products</HeaderCell>
+                                            <HeaderCell className="!py-2 !px-3 border-y-2 dark:border-slate-600">Total Sales</HeaderCell>
                                             <HeaderCell className="!py-2 !px-3 rounded-r-xl border-y-2 border-r-2 border-slate-200 dark:border-slate-600">
                                                 Action
                                             </HeaderCell>

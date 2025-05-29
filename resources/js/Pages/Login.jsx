@@ -17,7 +17,7 @@ const Login = ({ flash }) => {
         remember: false,
     });
 
-    const [demoModalOpen, setdemoModalOpen] = useState(true);
+    const [demoModalOpen, setdemoModalOpen] = useState(false);
 
     const handleLogin = (e) => {
         e.preventDefault();
@@ -41,7 +41,7 @@ const Login = ({ flash }) => {
     return (
         <Layout flash={flash}>
             <Head>
-                <title>Login | InventoryApp</title>
+                <title>Login | AgentApp</title>
             </Head>
 
             {demoModalOpen && (
@@ -55,10 +55,10 @@ const Login = ({ flash }) => {
                                 <h1 className="text-[46px]">👋</h1>
                                 <div className="flex flex-col">
                                     <h1 className="font-mondwest text-[#333] text-2xl">
-                                        InventoryApp <span className="text-[#ff0000]">[UNFINISHED]</span>
+                                        AgentApp <span className="text-[#ff0000]">[UNFINISHED]</span>
                                     </h1>
-                                    <a href="https://inventoryapp.viewsource.work/" className="text-[#777] font-mondwest">
-                                        https://inventoryapp.viewsource.work/
+                                    <a href="https://AgentApp.viewsource.work/" className="text-[#777] font-mondwest">
+                                        https://AgentApp.viewsource.work/
                                     </a>
                                 </div>
                             </div>
@@ -188,11 +188,11 @@ const Login = ({ flash }) => {
                                     <br />
                                     Available features:
                                     <br />
-                                    - Supplier
+                                    - Agent
                                     <br />
                                     - Product
                                     <br />
-                                    - Product Category
+                                    - Product Customer
                                     <br />
                                     - Customer
                                     <br />
@@ -237,7 +237,7 @@ const Login = ({ flash }) => {
                         <div className="mb-12 flex items-center">
                             <motion.img src={Logo} className="w-6 mr-2" initial={{ scale: 0 }} animate={{ scale: 1 }} />
                             <motion.p className="text-xl font-bold" initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }}>
-                                <span className="text-sky-500">Inventory</span>App
+                                <span className="text-sky-500">Agent</span>App
                             </motion.p>
                         </div>
                         <div className="mb-5">

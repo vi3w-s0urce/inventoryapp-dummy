@@ -8,30 +8,35 @@ const ModalDelete = ({ itemID, closeModal, type, description }) => {
     const layout = document.getElementById("modal-root");
 
     const handleDelete = () => {
-        // Category
+        let routeName = "";
+        let params = itemID;
+
         if (type == "category") {
-            Inertia.delete(route("category.destroy", itemID));
+            routeName = "category.destroy";
         } else if (type == "category_selected") {
-            Inertia.delete(route("category.destroySelected", itemID.join(",")));
-        }
-        // Product
-        else if (type == "product") {
-            Inertia.delete(route("product.destroy", itemID));
+            routeName = "category.destroySelected";
+            params = itemID.join(",");
+        } else if (type == "product") {
+            routeName = "product.destroy";
         } else if (type == "product_selected") {
-            Inertia.delete(route("product.destroySelected", itemID.join(",")));
-        }
-        // Supplier
-        else if (type == "supplier") {
-            Inertia.delete(route("supplier.destroy", itemID));
+            routeName = "product.destroySelected";
+            params = itemID.join(",");
+        } else if (type == "supplier") {
+            routeName = "supplier.destroy";
         } else if (type == "supplier_selected") {
-            Inertia.delete(route("supplier.destroySelected", itemID.join(",")));
-        }
-        // Customer
-        else if (type == "customer") {
-            Inertia.delete(route("customer.destroy", itemID));
+            routeName = "supplier.destroySelected";
+            params = itemID.join(",");
+        } else if (type == "customer") {
+            routeName = "customer.destroy";
         } else if (type == "customer_selected") {
-            Inertia.delete(route("customer.destroySelected", itemID.join(",")));
+            routeName = "customer.destroySelected";
+            params = itemID.join(",");
         }
+
+        Inertia.delete(route(routeName, params), {
+            onSuccess: () => console.log("Item deleted successfully"),
+            onError: () => closeModal(),
+        });
     };
 
     const [domReady, setDomReady] = useState(false);

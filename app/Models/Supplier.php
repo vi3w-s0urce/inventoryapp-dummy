@@ -15,4 +15,14 @@ class Supplier extends Model
         'email',
         'address',
     ];
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
+
+    public function getProductsCountAttribute()
+    {
+        return $this->products()->count();
+    }
 }

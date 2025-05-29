@@ -185,7 +185,7 @@ const ModalCart = ({ flash, products, filterSuppliers, filterCategories, closeMo
                     </div>
                     <div className="flex justify-between items-center">
                         <p className="text-xl font-bold">
-                            Products
+                            Sales
                             <span className="bg-slate-200 text-slate-500 dark:bg-slate-700 dark:text-slate-400 p-2 rounded-lg text-lg ml-1">
                                 {productData.length}
                             </span>
@@ -251,8 +251,8 @@ const ModalCart = ({ flash, products, filterSuppliers, filterCategories, closeMo
                                             <div className="flex flex-col gap-2 mb-3">
                                                 <SelectInput
                                                     name="supplier_id"
-                                                    label="Supplier"
-                                                    placeholder="Select Supplier"
+                                                    label="Agent"
+                                                    placeholder="Select Agent"
                                                     options={supplierFilterOptions}
                                                     value={supplierFilter.value}
                                                     type="filter"
@@ -261,7 +261,7 @@ const ModalCart = ({ flash, products, filterSuppliers, filterCategories, closeMo
                                                 <SelectInput
                                                     name="product_category_id"
                                                     label="Category"
-                                                    placeholder="Select Supplier"
+                                                    placeholder="Select Agent"
                                                     options={categoriesFilterOptions}
                                                     formatOptionLabel={categoriesFormatSelect}
                                                     value={categoryFilter.value}
@@ -313,7 +313,7 @@ const ModalCart = ({ flash, products, filterSuppliers, filterCategories, closeMo
                                                 Stock
                                             </HeaderCellSort>
                                             <HeaderCell className="!py-2 !px-3 border-y-2 dark:border-slate-600">Category</HeaderCell>
-                                            <HeaderCell className="!py-2 !px-3 border-y-2 dark:border-slate-600">Supplier</HeaderCell>
+                                            <HeaderCell className="!py-2 !px-3 border-y-2 dark:border-slate-600">Agent</HeaderCell>
                                             <HeaderCell className="!py-2 !px-3 rounded-r-xl border-y-2 border-r-2 border-slate-200 dark:border-slate-600">
                                                 Action
                                             </HeaderCell>
